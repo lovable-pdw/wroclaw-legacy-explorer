@@ -1,0 +1,96 @@
+import { MapPin, Phone, Mail, FileText } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+const Footer = () => {
+  return (
+    <footer className="bg-card border-t border-primary/20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid md:grid-cols-3 gap-8">
+          {/* Brand */}
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <MapPin className="w-8 h-8 text-primary" />
+              <div className="flex flex-col">
+                <span className="text-xl font-bold text-foreground">
+                  Projekt Dawny
+                </span>
+                <span className="text-lg text-primary font-semibold">
+                  WROCŁAW
+                </span>
+              </div>
+            </div>
+            <p className="text-muted-foreground mb-4">
+              Historyczne wycieczki po Wrocławiu z tabletem i przewodnikiem. 
+              Odkryj przeszłość miasta w nowoczesny sposób.
+            </p>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h3 className="text-lg font-semibold text-foreground mb-4">
+              Kontakt
+            </h3>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <Phone className="w-5 h-5 text-primary" />
+                <a 
+                  href="tel:+48787975999"
+                  className="text-muted-foreground hover:text-primary transition-colors duration-300"
+                >
+                  +48 787 975 999
+                </a>
+              </div>
+              <div className="flex items-center gap-3">
+                <Mail className="w-5 h-5 text-primary" />
+                <span className="text-muted-foreground">
+                  info@projektdawnywroclaw.pl
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-lg font-semibold text-foreground mb-4">
+              Dokumenty
+            </h3>
+            <div className="space-y-3">
+              <Button 
+                variant="ghost" 
+                className="p-0 h-auto justify-start text-muted-foreground hover:text-primary"
+                asChild
+              >
+                <a href="#" className="flex items-center gap-2">
+                  <FileText className="w-4 h-4" />
+                  Regulamin (PDF)
+                </a>
+              </Button>
+            </div>
+
+            <div className="mt-6">
+              <h4 className="text-sm font-semibold text-foreground mb-3">
+                PATRONAT
+              </h4>
+              <div className="flex gap-2 text-xs text-muted-foreground">
+                <span>Airport</span>
+                <span>•</span>
+                <span>LEC</span>
+                <span>•</span>
+                <span>Fly</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="mt-8 pt-8 border-t border-primary/20 text-center">
+          <p className="text-muted-foreground">
+            © 2024 Projekt Dawny Wrocław. Wszystkie prawa zastrzeżone.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
