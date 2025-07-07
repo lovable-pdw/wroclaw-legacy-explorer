@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, Users } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Promotion = () => {
   return (
@@ -59,13 +60,15 @@ const Promotion = () => {
                   </Badge>
                 </div>
                 
-                <Button 
-                  variant="hero" 
-                  size="lg"
-                  className="w-full"
-                >
-                  ZAREZERWUJ TERAZ
-                </Button>
+                <Link to="/booking">
+                  <Button 
+                    variant="hero" 
+                    size="lg"
+                    className="w-full"
+                  >
+                    ZAREZERWUJ TERAZ
+                  </Button>
+                </Link>
               </div>
             </div>
           </CardContent>

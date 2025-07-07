@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Users, Tablet } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Pricing = () => {
   const pricingPlans = [
@@ -90,12 +91,14 @@ const Pricing = () => {
                   </span>
                 </div>
                 
-                <Button 
-                  variant={plan.popular ? "hero" : "historical"}
-                  className="w-full"
-                >
-                  WYBIERZ PAKIET
-                </Button>
+                <Link to="/booking">
+                  <Button 
+                    variant={plan.popular ? "hero" : "historical"}
+                    className="w-full"
+                  >
+                    WYBIERZ PAKIET
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           ))}
@@ -112,13 +115,15 @@ const Pricing = () => {
                 PROMOCJA 50%
               </Badge>
             </div>
-            <Button 
-              variant="outline" 
-              size="lg"
-              className="border-background text-background hover:bg-background hover:text-foreground"
-            >
-              ZAREZERWUJ GRUPĘ
-            </Button>
+            <Link to="/booking">
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="border-background text-background hover:bg-background hover:text-foreground"
+              >
+                ZAREZERWUJ GRUPĘ
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>

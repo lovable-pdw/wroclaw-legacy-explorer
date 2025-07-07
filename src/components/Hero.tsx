@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Phone } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/wroclaw-hero.jpg";
 
 const Hero = () => {
@@ -29,13 +30,15 @@ const Hero = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
-            <Button 
-              variant="hero" 
-              size="lg"
-              className="text-lg px-8 py-4 animate-glow-pulse"
-            >
-              ZAREZERWUJ WYCIECZKĘ
-            </Button>
+            <Link to="/booking">
+              <Button 
+                variant="hero" 
+                size="lg"
+                className="text-lg px-8 py-4 animate-glow-pulse"
+              >
+                ZAREZERWUJ WYCIECZKĘ
+              </Button>
+            </Link>
             
             <div className="flex items-center gap-2 text-muted-foreground">
               <Phone className="w-5 h-5" />
