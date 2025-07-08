@@ -17,6 +17,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import Footer from "@/components/Footer";
+import { API_ENDPOINTS } from "@/lib/api";
 
 const bookingSchema = z.object({
   date: z.date({
@@ -98,7 +99,7 @@ const Booking = () => {
         extOrderId: `booking-${Date.now()}` // Unique order ID
       };
 
-      const response = await fetch('http://localhost:3001/api/create-order', {
+      const response = await fetch(API_ENDPOINTS.CREATE_ORDER, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData)

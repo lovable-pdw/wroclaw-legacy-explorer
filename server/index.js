@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 3001; // Backend port
@@ -9,6 +10,11 @@ const port = process.env.PORT || 3001; // Backend port
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from React build in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../dist')));
+}
 
 // PayU API Configuration
 const IS_SANDBOX = process.env.PAYU_SANDBOX === 'true' || process.env.NODE_ENV !== 'production';
@@ -150,11 +156,10 @@ app.post('/api/create-order', async (req, res) => {
         name: product.name,
         unitPrice: product.unitPrice.toString(),
         quantity: product.quantity.toString()
-      })),
-      ...(extOrderId && { extOrderId }),
+      })),      ...(extOrderId && { extOrderId }),
       // Add return URLs for better user experience
-      continueUrl: "http://localhost:3000/payment-success",
-      notifyUrl: "http://localhost:3001/api/payu-webhook"
+      continueUrl: `${FRONTEND_URL}/payment-success`,
+      notifyUrl: `${req.protocol}://${req.get('host')}/api/payu-webhook`
     };
 
     console.log('Creating PayU order with payload:', JSON.stringify(orderPayload, null, 2));    // Create order with PayU
@@ -309,8 +314,19 @@ app.post('/api/payu-webhook', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('PayU Backend Server is running!');
+  if (process.env.NODE_ENV === 'production') {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
+  } else {
+    res.send('PayU Backend Server is running!');
+  }
 });
+
+// Catch-all handler for SPA in production
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
+  });
+}
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);

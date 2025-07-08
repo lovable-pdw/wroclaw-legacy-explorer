@@ -4,6 +4,7 @@ import { CheckCircle, AlertCircle, Clock, ArrowLeft } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
+import { API_ENDPOINTS } from "@/lib/api";
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
@@ -27,10 +28,9 @@ const PaymentSuccess = () => {
       setOrderStatus('success');
     }
   }, [searchParams]);
-
   const checkOrderStatus = async (orderId: string) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/order-status/${orderId}`);
+      const response = await fetch(API_ENDPOINTS.ORDER_STATUS(orderId));
       if (response.ok) {
         const data = await response.json();
         setOrderDetails(data);

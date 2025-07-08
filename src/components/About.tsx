@@ -30,7 +30,7 @@ const About = () => {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            Odkryj historię Wrocławia
+            Poczuj Dawny Wrocław
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Zanurz się w fascynującej historii Wrocławia dzięki unikalnej kombinacji 
