@@ -9,12 +9,17 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "node server/index.js",
-    "dev:server": "nodemon server/index.js",
+    "dev:server": "cd server && node index.js",
+    "dev:server:watch": "cd server && nodemon index.js",
     "start": "cd server && npm start",
     "postinstall": "cd server && npm install",
     "build:production": "npm run build && cd server && npm install --production",
     "deploy:build": "powershell -ExecutionPolicy Bypass -File build-for-deployment.bat",
-    "deploy:prepare": "npm run build && npm run deploy:build"
+    "deploy:prepare": "npm run build && npm run deploy:build",
+    "dev:full": "concurrently \"npm run dev\" \"npm run dev:server\"",
+    "dev:full:watch": "concurrently \"npm run dev\" \"npm run dev:server:watch\"",
+    "dev:backend": "cd server && npm run dev",
+    "dev:frontend": "vite --host"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -75,6 +80,7 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.20",
+    "concurrently": "^9.2.0",
     "eslint": "^9.9.0",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
