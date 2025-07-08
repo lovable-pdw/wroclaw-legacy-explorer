@@ -34,7 +34,38 @@ npm i
 
 # Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
+
+# Step 5: In a separate terminal, start the backend server.
+npm run server
 ```
+
+### Backend Server
+
+This project includes a Node.js/Express backend server in the `/server` directory to handle PayU API interactions.
+
+To run the backend server:
+```sh
+npm run server
+```
+Or for development with auto-reloading (if you have `nodemon` installed globally or add it to project devDependencies):
+```sh
+npm run dev:server
+```
+
+**Important: PayU Configuration**
+
+The backend server requires PayU API credentials to be configured via environment variables:
+- `PAYU_APP_ID`: Your PayU Application ID.
+- `PAYU_PRIVATE_KEY`: Your PayU Private Key.
+- `PAYU_ENV`: Set to `test` for testing environment or `live` for production. (Defaults to `test` if `NODE_ENV` is not `production`).
+
+Create a `.env` file in the `/server` directory (this file is gitignored):
+```
+PAYU_APP_ID=your_app_id_here
+PAYU_PRIVATE_KEY=your_private_key_here
+PAYU_ENV=test
+```
+Remember to replace placeholders with your actual PayU credentials. The frontend also requires a `PAYU_PUBLIC_KEY` to be set in `src/pages/Booking.tsx` and the correct PayU Secure Fields SDK URL in `index.html`.
 
 **Edit a file directly in GitHub**
 

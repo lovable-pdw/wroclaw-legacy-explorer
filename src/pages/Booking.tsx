@@ -14,10 +14,17 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useEffect, useRef } from "react"; // Added useEffect and useRef
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+// TODO: Replace with your actual PayU Public Key
+const PAYU_PUBLIC_KEY = "YOUR_PAYU_PUBLIC_KEY";
+
+// Define the PayU SecureFields type if you have it, or use `any` for now
+// This assumes the PayU SDK is loaded globally via the script tag in index.html
+declare const PayU: any;
 
 const bookingSchema = z.object({
   date: z.date({
@@ -49,10 +56,98 @@ const packages = [
 const Booking = () => {
   const [selectedPackage, setSelectedPackage] = useState<string>("");
   const { toast } = useToast();
+  const payuSecureFieldsRef = useRef<any>(null); // Ref to store PayU SecureFields instance
+  // const [payuToken, setPayuToken] = useState<string | null>(null); // Token state might not be needed if directly used
+  const [payuError, setPayuError] = useState<string | null>(null);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false); // Loading state
 
   const form = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
   });
+
+  useEffect(() => {
+    if (typeof PayU === "undefined" || !PAYU_PUBLIC_KEY.startsWith("pk_")) {
+      console.warn("PayU SDK not loaded or Public Key is a placeholder.");
+      setPayuError("Błąd inicjalizacji płatności PayU. Klucz publiczny jest nieprawidłowy lub SDK niezaładowane.");
+      // Optionally, you could disable the payment form or show a more prominent error
+      return;
+    }
+
+    try {
+      const secureFields = PayU.SecureForms(PAYU_PUBLIC_KEY, {
+        fonts: [{ cssSrc: "" }], // You can link your app's fonts if needed
+      });
+      payuSecureFieldsRef.current = secureFields;
+
+      const sfStyles = {
+        base: {
+          // Basic styling for the input fields
+          fontSize: '16px',
+          color: '#333',
+          fontFamily: 'Arial, sans-serif',
+        },
+        invalid: {
+          // Styling for invalid fields
+          color: 'red',
+          ':focus': {
+            color: 'red',
+          },
+        },
+      };
+
+      // Mount Card Number
+      const cardNumber = secureFields.create('card', sfStyles);
+      cardNumber.mount('#payu-card-number');
+
+      // Mount Card Expiry
+      const cardExpiry = secureFields.create('expiry', sfStyles);
+      cardExpiry.mount('#payu-card-expiry');
+
+      // Mount Card CVV
+      const cardCvv = secureFields.create('cvv', sfStyles);
+      cardCvv.mount('#payu-card-cvv');
+
+      // Optional: Listen for validation events to update UI
+      const statusDiv = document.getElementById('payu-sf-status');
+
+      cardNumber.on('validation', (status: any) => {
+        if (statusDiv && status.error && status.field === 'card') {
+          statusDiv.textContent = status.error.message || 'Błąd numeru karty';
+        } else if (statusDiv && !status.error && status.field === 'card') {
+          statusDiv.textContent = ''; // Clear error
+        }
+      });
+      cardExpiry.on('validation', (status: any) => {
+         if (statusDiv && status.error && status.field === 'expiry') {
+          statusDiv.textContent = status.error.message || 'Błąd daty ważności';
+        } else if (statusDiv && !status.error && status.field === 'expiry') {
+          statusDiv.textContent = ''; // Clear error
+        }
+      });
+      cardCvv.on('validation', (status: any) => {
+        if (statusDiv && status.error && status.field === 'cvv') {
+          statusDiv.textContent = status.error.message || 'Błąd kodu CVV';
+        } else if (statusDiv && !status.error && status.field === 'cvv') {
+          statusDiv.textContent = ''; // Clear error
+        }
+      });
+
+
+    } catch (e) {
+      console.error("Error initializing PayU Secure Fields:", e);
+      setPayuError("Wystąpił błąd podczas inicjalizacji formularza płatności PayU.");
+    }
+
+    // Cleanup function to unmount fields if component unmounts
+    return () => {
+      if (payuSecureFieldsRef.current) {
+        // Check if specific fields were mounted before trying to unmount
+        // This part of the SDK is sometimes less clear in docs, adjust if PayU provides specific unmount methods per field
+        // For now, we assume destroying the main instance is enough or fields unmount automatically.
+        // payuSecureFieldsRef.current.destroy(); // Or similar method if available
+      }
+    };
+  }, []); // Empty dependency array ensures this runs once on mount
 
   const getSelectedPackagePrice = () => {
     const pkg = packages.find(p => p.id === selectedPackage);
@@ -63,27 +158,139 @@ const Booking = () => {
     return packages.find(p => p.id === selectedPackage);
   };
 
-  const onSubmit = (data: BookingFormData) => {
+  const onSubmit = async (data: BookingFormData) => {
+    setPayuError(null); // Clear previous errors
+    if (!payuSecureFieldsRef.current) {
+      setPayuError("Formularz płatności PayU nie jest gotowy.");
+      toast({ title: "Błąd", description: "Formularz płatności PayU nie jest gotowy.", variant: "destructive" });
+      return;
+    }
+    if (!selectedPackage) {
+      toast({ title: "Błąd", description: "Proszę wybrać pakiet.", variant: "destructive" });
+      return;
+    }
+
+    setIsProcessingPayment(true);
     const packageDetails = getSelectedPackageDetails();
-    
-    // Simulate PayU integration
-    toast({
-      title: "Przekierowanie do PayU",
-      description: "Za chwilę zostaniesz przekierowany do systemu płatności PayU",
-    });
-    
-    // In a real application, you would integrate with PayU API here
-    console.log("Booking data:", { ...data, package: packageDetails });
-    
-    // Simulate redirect to PayU
-    setTimeout(() => {
-      window.open("https://secure.payu.com/", "_blank");
-    }, 2000);
+    if (!packageDetails) {
+      toast({ title: "Błąd", description: "Nie można znaleźć szczegółów pakietu.", variant: "destructive" });
+      setIsProcessingPayment(false);
+      return;
+    }
+
+    try {
+      // 1. Create PayU Token from Secure Fields
+      const tokenResult = await payuSecureFieldsRef.current.createToken();
+      if (tokenResult.error) {
+        console.error("PayU Tokenization Error:", tokenResult.error);
+        setPayuError(tokenResult.error.message || "Błąd podczas tworzenia tokena płatności.");
+        toast({
+          title: "Błąd tokenizacji PayU",
+          description: tokenResult.error.message || "Nie udało się przetworzyć danych karty.",
+          variant: "destructive",
+        });
+        setIsProcessingPayment(false);
+        return;
+      }
+
+      const payuToken = tokenResult.token;
+      // console.log("PayU Token:", payuToken); // For debugging
+
+      // 2. Call backend to create payment
+      const createPaymentResponse = await fetch('/api/create-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: packageDetails.price, // Assuming price is in PLN, backend will convert to cents
+          currency: 'PLN', // Or get dynamically if needed
+          statement_soft_descriptor: `Wycieczka: ${packageDetails.name}`,
+        }),
+      });
+
+      if (!createPaymentResponse.ok) {
+        const errorData = await createPaymentResponse.json();
+        throw new Error(errorData.details?.message || errorData.error || 'Nie udało się utworzyć płatności w systemie.');
+      }
+      const paymentData = await createPaymentResponse.json();
+      const paymentId = paymentData.paymentId;
+
+      if (!paymentId) {
+        throw new Error('Nie otrzymano payment_id z backendu.');
+      }
+
+      // 3. Call backend to create charge
+      const createChargeResponse = await fetch('/api/create-charge', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          paymentId: paymentId,
+          token: payuToken,
+          // Optionally include customer and billing_address if collected and required by PayU
+          customer: { // Example structure, adjust as needed
+            email: data.email,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            phone: data.phone,
+          },
+          // billing_address: { ... },
+          order_details: { // Example structure
+            product_description: `Rezerwacja wycieczki: ${packageDetails.name}`,
+            // more order details if needed
+          }
+        }),
+      });
+
+      if (!createChargeResponse.ok) {
+        const errorData = await createChargeResponse.json();
+        throw new Error(errorData.details?.message || errorData.error || 'Nie udało się przetworzyć płatności.');
+      }
+
+      const chargeData = await createChargeResponse.json();
+      console.log("PayU Charge Response:", chargeData); // For debugging
+
+      // Handle PayU charge response
+      // This depends heavily on PayU's response structure for a charge.
+      // Typically, you'd check for a status like 'SUCCESSFUL', 'PENDING', or 'FAILED'.
+      if (chargeData.status === 'SUCCESSFUL' || chargeData.status === 'CAPTURED') { // Adjust based on actual PayU status
+        toast({
+          title: "Płatność zakończona sukcesem!",
+          description: "Twoja rezerwacja została potwierdzona.",
+        });
+        form.reset(); // Reset form on success
+        setSelectedPackage("");
+        // Potentially redirect to a success page: history.push('/booking-success');
+      } else if (chargeData.redirect_uri) {
+        // Handle 3D Secure redirection if needed
+        toast({
+          title: "Przekierowanie do banku",
+          description: "Za chwilę zostaniesz przekierowany w celu dodatkowej weryfikacji.",
+        });
+        window.location.href = chargeData.redirect_uri;
+      } else {
+        // Handle other statuses (e.g., PENDING, FAILED)
+        setPayuError(chargeData.error?.message || chargeData.message || "Płatność nie powiodła się. Spróbuj ponownie lub skontaktuj się z obsługą.");
+        toast({
+          title: "Płatność nie powiodła się",
+          description: chargeData.error?.message || chargeData.message || "Wystąpił problem z płatnością.",
+          variant: "destructive",
+        });
+      }
+
+    } catch (error: any) {
+      console.error("Payment Processing Error:", error);
+      setPayuError(error.message || "Wystąpił nieoczekiwany błąd podczas przetwarzania płatności.");
+      toast({
+        title: "Błąd płatności",
+        description: error.message || "Nie udało się przetworzyć płatności.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessingPayment(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="max-w-4xl mx-auto">
@@ -333,6 +540,30 @@ const Booking = () => {
                     </CardContent>
                   </Card>
 
+                  {/* Payment Details Card */}
+                  <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
+                    <CardHeader>
+                      <CardTitle>Dane Płatności (PayU Secure Fields)</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div>
+                        <Label htmlFor="payu-card-number">Numer karty</Label>
+                        <div id="payu-card-number" className="payu-secure-field h-10 p-2 border rounded-md mt-1"></div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="payu-card-expiry">Data ważności (MM/RR)</Label>
+                          <div id="payu-card-expiry" className="payu-secure-field h-10 p-2 border rounded-md mt-1"></div>
+                        </div>
+                        <div>
+                          <Label htmlFor="payu-card-cvv">CVV</Label>
+                          <div id="payu-card-cvv" className="payu-secure-field h-10 p-2 border rounded-md mt-1"></div>
+                        </div>
+                      </div>
+                      <div id="payu-sf-status" className="text-sm text-red-500"></div>
+                    </CardContent>
+                  </Card>
+
                   {/* Summary and Payment */}
                   <Card className="bg-gradient-accent text-background shadow-glow">
                     <CardHeader>
@@ -357,10 +588,11 @@ const Booking = () => {
                           type="submit"
                           size="lg"
                           className="w-full bg-background text-foreground hover:bg-background/90"
-                          disabled={!selectedPackage}
+                          disabled={!selectedPackage || isProcessingPayment || !payuSecureFieldsRef.current || !!payuError}
                         >
-                          PRZEJDŹ DO PŁATNOŚCI PAYU
+                          {isProcessingPayment ? "Przetwarzanie..." : "PRZEJDŹ DO PŁATNOŚCI PAYU"}
                         </Button>
+                        {payuError && <p className="text-sm text-red-400 mt-2 text-center">{payuError}</p>}
                       </div>
                       
                       <div className="text-center text-sm opacity-90">
