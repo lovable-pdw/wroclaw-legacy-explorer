@@ -77,9 +77,7 @@ const Booking = () => {
       toast({ title: "Błąd", description: "Nie można znaleźć szczegółów pakietu.", variant: "destructive" });
       setIsProcessingPayment(false);
       return;
-    }
-
-    try {
+    }    try {
       // Get client IP (you might want to get this from a service)
       const customerIp = "127.0.0.1"; // In production, get real IP
 
@@ -96,7 +94,15 @@ const Booking = () => {
             quantity: 1
           }
         ],
-        extOrderId: `booking-${Date.now()}` // Unique order ID
+        extOrderId: `booking-${Date.now()}`, // Unique order ID
+        // Add buyer information for email notifications
+        buyer: {
+          email: data.email,
+          phone: data.phone,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          language: 'pl'
+        }
       };
 
       const response = await fetch(API_ENDPOINTS.CREATE_ORDER, {

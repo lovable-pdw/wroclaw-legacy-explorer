@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 const path = require('path');
+const { sendPaymentConfirmation, testEmailConnection } = require('./emailService');
 
 const app = express();
 const port = process.env.PORT || 3001; // Backend port
@@ -60,6 +61,12 @@ if (IS_SANDBOX) {
 if (!PAYU_CLIENT_ID || !PAYU_CLIENT_SECRET || !PAYU_MERCHANT_POS_ID) {
   console.warn('Warning: Some PayU configuration values are missing. Using fallback values.');
 }
+
+// Test email connection at startup
+(async () => {
+  console.log('🔧 Testing email server connection...');
+  await testEmailConnection();
+})();
 
 // Store OAuth token in memory (in production, use Redis or database)
 let accessToken = null;
@@ -119,7 +126,8 @@ app.post('/api/create-order', async (req, res) => {
     currencyCode = 'PLN', 
     totalAmount, 
     products,
-    extOrderId 
+    extOrderId,
+    buyer // Add buyer information
   } = req.body;
 
   // Validate required fields
@@ -149,12 +157,11 @@ app.post('/api/create-order', async (req, res) => {
     let finalAmount = totalAmount;
     let finalDescription = description;
     if (IS_TEST_MODE) {
-      finalAmount = 1; // 1 grosz
+      finalAmount = 100; // 1 zl
       finalDescription = `[TEST] ${description}`;
-      console.log('🧪 TEST MODE: Using 1 grosz for production PayU test');
+      console.log('🧪 TEST MODE: Using 1 zloty for production PayU test');
     }
-    
-    // Create order payload
+      // Create order payload
     const orderPayload = {
       customerIp,
       merchantPosId: PAYU_MERCHANT_POS_ID,
@@ -165,7 +172,18 @@ app.post('/api/create-order', async (req, res) => {
         name: IS_TEST_MODE ? `[TEST] ${product.name}` : product.name,
         unitPrice: IS_TEST_MODE ? "100" : product.unitPrice.toString(),
         quantity: product.quantity.toString()
-      })),      ...(extOrderId && { extOrderId }),
+      })),
+      ...(extOrderId && { extOrderId }),
+      // Add buyer information if provided
+      ...(buyer && {
+        buyer: {
+          email: buyer.email,
+          phone: buyer.phone,
+          firstName: buyer.firstName,
+          lastName: buyer.lastName,
+          language: buyer.language || 'pl'
+        }
+      }),
       // Add return URLs for better user experience
       continueUrl: `${FRONTEND_URL}/payment-success`,
       notifyUrl: `${req.protocol}://${req.get('host')}/api/payu-webhook`
@@ -312,14 +330,89 @@ app.get('/api/order-status/:orderId', async (req, res) => {
   }
 });
 
-// Webhook endpoint for PayU notifications (optional)
-app.post('/api/payu-webhook', (req, res) => {
-  console.log('PayU Webhook received:', req.body);
+// Webhook endpoint for PayU notifications
+app.post('/api/payu-webhook', async (req, res) => {
+  console.log('PayU Webhook received:', JSON.stringify(req.body, null, 2));
   
-  // Process the webhook data according to PayU documentation
-  // Verify the signature, update order status, etc.
-  
-  res.status(200).send('OK');
+  try {
+    const notification = req.body;
+    
+    // PayU sends notifications with order information
+    if (notification && notification.order) {
+      const order = notification.order;
+      const orderId = order.orderId;
+      const status = order.status;
+      
+      console.log(`Order ${orderId} status: ${status}`);
+      
+      // Handle successful payment
+      if (status === 'COMPLETED') {
+        console.log('✅ Payment completed successfully for order:', orderId);
+        
+        // Extract customer email from buyer info
+        let customerEmail = null;
+        if (order.buyer && order.buyer.email) {
+          customerEmail = order.buyer.email;
+        }
+        
+        // If we don't have email from webhook, try to get it from order details via API
+        if (!customerEmail && orderId) {
+          try {
+            const token = await getAccessToken();
+            const orderResponse = await axios.get(
+              `${PAYU_BASE_URL}/api/v2_1/orders/${orderId}`,
+              {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                }
+              }
+            );
+            
+            if (orderResponse.data && orderResponse.data.orders && orderResponse.data.orders[0]) {
+              const orderData = orderResponse.data.orders[0];
+              if (orderData.buyer && orderData.buyer.email) {
+                customerEmail = orderData.buyer.email;
+              }
+            }
+          } catch (error) {
+            console.error('Failed to fetch order details for email:', error.message);
+          }
+        }
+        
+        // Send confirmation email if we have customer email
+        if (customerEmail) {
+          console.log('📧 Sending payment confirmation email to:', customerEmail);
+          
+          const orderDetails = {
+            orderId: orderId,
+            totalAmount: order.totalAmount || 0,
+            currencyCode: order.currencyCode || 'PLN',
+            products: order.products || []
+          };
+          
+          const emailResult = await sendPaymentConfirmation(customerEmail, orderDetails);
+          
+          if (emailResult.success) {
+            console.log('✅ Payment confirmation email sent successfully');
+          } else {
+            console.error('❌ Failed to send payment confirmation email:', emailResult.error);
+          }
+        } else {
+          console.warn('⚠️ No customer email found in order data, skipping email notification');
+        }
+      } else {
+        console.log(`Order ${orderId} status is ${status}, no email action needed`);
+      }
+    }
+    
+    // Always respond with 200 OK to acknowledge receipt
+    res.status(200).send('OK');
+    
+  } catch (error) {
+    console.error('Error processing PayU webhook:', error);
+    // Still respond with 200 to prevent PayU from retrying
+    res.status(200).send('ERROR');
+  }
 });
 
 app.get('/', (req, res) => {
@@ -336,6 +429,52 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, '../dist/index.html'));
   });
 }
+
+// Test email endpoint (for debugging)
+app.post('/api/test-email', async (req, res) => {
+  const { email, orderId } = req.body;
+  
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required' });
+  }
+  
+  try {
+    const testOrderDetails = {
+      orderId: orderId || 'TEST-' + Date.now(),
+      totalAmount: 2500, // 25.00 PLN in grosze
+      currencyCode: 'PLN',
+      products: [
+        {
+          name: 'Rezerwacja testowa - Dawny Wrocław',
+          quantity: '1',
+          unitPrice: '2500'
+        }
+      ]
+    };
+    
+    console.log('📧 Sending test email to:', email);
+    const result = await sendPaymentConfirmation(email, testOrderDetails);
+    
+    if (result.success) {
+      res.json({ 
+        success: true, 
+        message: 'Test email sent successfully',
+        messageId: result.messageId 
+      });
+    } else {
+      res.status(500).json({ 
+        success: false, 
+        error: result.error 
+      });
+    }
+  } catch (error) {
+    console.error('Test email error:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: error.message 
+    });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
