@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // PayU API Configuration
-const IS_SANDBOX = process.env.PAYU_SANDBOX === 'true' || process.env.NODE_ENV !== 'production';
+const IS_SANDBOX = process.env.PAYU_SANDBOX === 'true'
 const PAYU_BASE_URL = IS_SANDBOX ? 'https://secure.snd.payu.com' : 'https://secure.payu.com';
 
 // Sandbox public credentials (for testing only)
@@ -109,6 +109,8 @@ async function getAccessToken() {
   }
 }
 
+const IS_TEST_MODE = process.env.TEST_MODE === 'true';
+
 // Endpoint to create a PayU order
 app.post('/api/create-order', async (req, res) => {
   const { 
@@ -144,17 +146,24 @@ app.post('/api/create-order', async (req, res) => {
         });
       }
     }
+    let finalAmount = totalAmount;
+    let finalDescription = description;
+    if (IS_TEST_MODE) {
+      finalAmount = 1; // 1 grosz
+      finalDescription = `[TEST] ${description}`;
+      console.log('🧪 TEST MODE: Using 1 grosz for production PayU test');
+    }
     
     // Create order payload
     const orderPayload = {
       customerIp,
       merchantPosId: PAYU_MERCHANT_POS_ID,
-      description,
+      description: finalDescription,
       currencyCode,
-      totalAmount: totalAmount.toString(), // PayU expects string
+      totalAmount: finalAmount.toString(), // PayU expects string
       products: products.map(product => ({
-        name: product.name,
-        unitPrice: product.unitPrice.toString(),
+        name: IS_TEST_MODE ? `[TEST] ${product.name}` : product.name,
+        unitPrice: IS_TEST_MODE ? "100" : product.unitPrice.toString(),
         quantity: product.quantity.toString()
       })),      ...(extOrderId && { extOrderId }),
       // Add return URLs for better user experience
