@@ -332,7 +332,26 @@ app.get('/api/order-status/:orderId', async (req, res) => {
 
 // Webhook endpoint for PayU notifications
 app.post('/api/payu-webhook', async (req, res) => {
-  console.log('PayU Webhook received:', JSON.stringify(req.body, null, 2));
+  const timestamp = new Date().toISOString();
+  
+  // Log webhook call
+  const logEntry = {
+    timestamp,
+    method: req.method,
+    headers: req.headers,
+    body: req.body,
+    ip: req.ip
+  };
+  
+  webhookLogs.push(logEntry);
+  if (webhookLogs.length > MAX_LOGS) {
+    webhookLogs = webhookLogs.slice(-MAX_LOGS);
+  }
+  
+  console.log('=== PayU Webhook Received ===');
+  console.log('Timestamp:', timestamp);
+  console.log('Headers:', JSON.stringify(req.headers, null, 2));
+  console.log('Body:', JSON.stringify(req.body, null, 2));
   
   try {
     const notification = req.body;
@@ -343,7 +362,10 @@ app.post('/api/payu-webhook', async (req, res) => {
       const orderId = order.orderId;
       const status = order.status;
       
-      console.log(`Order ${orderId} status: ${status}`);
+      console.log(`=== Order Status Update ===`);
+      console.log(`Order ID: ${orderId}`);
+      console.log(`Status: ${status}`);
+      console.log(`Buyer Email: ${order.buyer?.email || 'Not provided'}`);
       
       // Handle successful payment
       if (status === 'COMPLETED') {
@@ -353,6 +375,9 @@ app.post('/api/payu-webhook', async (req, res) => {
         let customerEmail = null;
         if (order.buyer && order.buyer.email) {
           customerEmail = order.buyer.email;
+          console.log('📧 Customer email found in notification:', customerEmail);
+        } else {
+          console.log('⚠️ No buyer email in notification, trying to fetch from API...');
         }
         
         // If we don't have email from webhook, try to get it from order details via API
@@ -368,14 +393,17 @@ app.post('/api/payu-webhook', async (req, res) => {
               }
             );
             
+            console.log('📋 Fetched order details from PayU API');
             if (orderResponse.data && orderResponse.data.orders && orderResponse.data.orders[0]) {
               const orderData = orderResponse.data.orders[0];
+              console.log('🔍 Order data buyer info:', orderData.buyer);
               if (orderData.buyer && orderData.buyer.email) {
                 customerEmail = orderData.buyer.email;
+                console.log('📧 Customer email found in API response:', customerEmail);
               }
             }
           } catch (error) {
-            console.error('Failed to fetch order details for email:', error.message);
+            console.error('❌ Failed to fetch order details for email:', error.message);
           }
         }
         
@@ -390,6 +418,8 @@ app.post('/api/payu-webhook', async (req, res) => {
             products: order.products || []
           };
           
+          console.log('📦 Order details for email:', orderDetails);
+          
           const emailResult = await sendPaymentConfirmation(customerEmail, orderDetails);
           
           if (emailResult.success) {
@@ -399,17 +429,21 @@ app.post('/api/payu-webhook', async (req, res) => {
           }
         } else {
           console.warn('⚠️ No customer email found in order data, skipping email notification');
+          console.warn('💡 Make sure buyer information is included in PayU order creation');
         }
       } else {
-        console.log(`Order ${orderId} status is ${status}, no email action needed`);
+        console.log(`ℹ️ Order ${orderId} status is ${status}, no email action needed`);
       }
+    } else {
+      console.log('⚠️ No order information in notification');
+      console.log('Raw notification structure:', Object.keys(notification || {}));
     }
     
     // Always respond with 200 OK to acknowledge receipt
     res.status(200).send('OK');
     
   } catch (error) {
-    console.error('Error processing PayU webhook:', error);
+    console.error('❌ Error processing PayU webhook:', error);
     // Still respond with 200 to prevent PayU from retrying
     res.status(200).send('ERROR');
   }
@@ -419,7 +453,72 @@ app.get('/', (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, '../dist/index.html'));
   } else {
-    res.send('PayU Backend Server is running!');
+    res.send(`
+      <h1>PayU Backend Server is running!</h1>
+      <h2>Test Endpoints:</h2>
+      <ul>
+        <li><strong>POST /api/test-email</strong> - Test email functionality</li>
+        <li><strong>POST /api/test-webhook</strong> - Test webhook processing</li>
+        <li><strong>GET /api/webhook-logs</strong> - View recent webhook calls</li>
+      </ul>
+      <h3>Email Configuration:</h3>
+      <ul>
+        <li>Host: ${process.env.EMAIL_HOST}</li>
+        <li>Port: ${process.env.EMAIL_PORT}</li>
+        <li>User: ${process.env.EMAIL_USER}</li>
+        <li>From: ${process.env.EMAIL_FROM}</li>
+      </ul>
+    `);
+  }
+});
+
+// Store recent webhook calls for debugging
+let webhookLogs = [];
+const MAX_LOGS = 50;
+
+// Add webhook logs endpoint
+app.get('/api/webhook-logs', (req, res) => {
+  res.json({
+    count: webhookLogs.length,
+    logs: webhookLogs.slice(-20) // Return last 20 logs
+  });
+});
+
+// Manual email trigger endpoint (fallback for when webhooks don't work)
+app.post('/api/send-payment-confirmation', async (req, res) => {
+  const { email, orderDetails } = req.body;
+  
+  if (!email || !orderDetails) {
+    return res.status(400).json({ error: 'Email and order details are required' });
+  }
+  
+  console.log('=== Manual Email Trigger ===');
+  console.log('Email:', email);
+  console.log('Order Details:', orderDetails);
+  
+  try {
+    const emailResult = await sendPaymentConfirmation(email, orderDetails);
+    
+    if (emailResult.success) {
+      console.log('✅ Manual payment confirmation email sent successfully');
+      res.json({ 
+        success: true, 
+        message: 'Email sent successfully',
+        messageId: emailResult.messageId 
+      });
+    } else {
+      console.error('❌ Failed to send manual payment confirmation email:', emailResult.error);
+      res.status(500).json({ 
+        success: false, 
+        error: emailResult.error 
+      });
+    }
+  } catch (error) {
+    console.error('❌ Manual email trigger error:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: error.message 
+    });
   }
 });
 
@@ -438,6 +537,10 @@ app.post('/api/test-email', async (req, res) => {
     return res.status(400).json({ error: 'Email is required' });
   }
   
+  console.log('=== Testing Email Function ===');
+  console.log('Target email:', email);
+  console.log('Test order ID:', orderId);
+  
   try {
     const testOrderDetails = {
       orderId: orderId || 'TEST-' + Date.now(),
@@ -453,25 +556,102 @@ app.post('/api/test-email', async (req, res) => {
     };
     
     console.log('📧 Sending test email to:', email);
+    console.log('📦 Test order details:', testOrderDetails);
+    
     const result = await sendPaymentConfirmation(email, testOrderDetails);
     
     if (result.success) {
+      console.log('✅ Test email sent successfully!');
       res.json({ 
         success: true, 
         message: 'Test email sent successfully',
-        messageId: result.messageId 
+        messageId: result.messageId,
+        sentTo: email
       });
     } else {
+      console.error('❌ Test email failed:', result.error);
       res.status(500).json({ 
         success: false, 
         error: result.error 
       });
     }
   } catch (error) {
-    console.error('Test email error:', error);
+    console.error('❌ Test email error:', error);
     res.status(500).json({ 
       success: false, 
       error: error.message 
+    });
+  }
+});
+
+// Enhanced test webhook endpoint to simulate PayU notifications
+app.post('/api/test-webhook', async (req, res) => {
+  const { email, orderId, status = 'COMPLETED' } = req.body;
+  
+  console.log('=== Testing Webhook Function ===');
+  console.log('Simulating PayU notification with:', { email, orderId, status });
+  
+  const mockNotification = {
+    order: {
+      orderId: orderId || 'TEST-WEBHOOK-' + Date.now(),
+      status: status,
+      totalAmount: '2500',
+      currencyCode: 'PLN',
+      products: [
+        {
+          name: 'Test Product - Dawny Wrocław',
+          quantity: '1',
+          unitPrice: '2500'
+        }
+      ],
+      buyer: email ? {
+        email: email,
+        firstName: 'Test',
+        lastName: 'User'
+      } : undefined
+    }
+  };
+  
+  // Simulate the webhook processing
+  req.body = mockNotification;
+  
+  // Forward to the actual webhook handler
+  console.log('🔄 Forwarding to webhook handler...');
+  
+  try {
+    // Process the mock notification the same way as real webhook
+    const notification = mockNotification;
+    const order = notification.order;
+    const customerEmail = order.buyer?.email;
+    
+    if (customerEmail && status === 'COMPLETED') {
+      const orderDetails = {
+        orderId: order.orderId,
+        totalAmount: parseInt(order.totalAmount),
+        currencyCode: order.currencyCode,
+        products: order.products
+      };
+      
+      const emailResult = await sendPaymentConfirmation(customerEmail, orderDetails);
+      
+      res.json({
+        success: true,
+        message: 'Test webhook processed',
+        emailSent: emailResult.success,
+        emailError: emailResult.error || null
+      });
+    } else {
+      res.json({
+        success: true,
+        message: 'Test webhook processed, but no email sent',
+        reason: !customerEmail ? 'No email provided' : `Status is ${status}, not COMPLETED`
+      });
+    }
+  } catch (error) {
+    console.error('❌ Test webhook error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
     });
   }
 });

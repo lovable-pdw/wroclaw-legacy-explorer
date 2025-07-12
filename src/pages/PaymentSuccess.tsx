@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import { API_ENDPOINTS } from "@/lib/api";
+import API_BASE_URL from "@/lib/api";
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
@@ -27,8 +28,7 @@ const PaymentSuccess = () => {
       // If no orderId, assume success for now
       setOrderStatus('success');
     }
-  }, [searchParams]);
-  const checkOrderStatus = async (orderId: string) => {
+  }, [searchParams]);  const checkOrderStatus = async (orderId: string) => {
     try {
       const response = await fetch(API_ENDPOINTS.ORDER_STATUS(orderId));
       if (response.ok) {
@@ -39,6 +39,30 @@ const PaymentSuccess = () => {
         const payuStatus = data.orders?.[0]?.status || data.status;
         if (payuStatus === 'COMPLETED' || payuStatus === 'SUCCESS') {
           setOrderStatus('success');
+          
+          // Trigger email notification if payment is completed
+          const bookingData = localStorage.getItem('bookingData');
+          if (bookingData) {
+            try {
+              const booking = JSON.parse(bookingData);              // Send email notification request
+              await fetch(`${API_BASE_URL}/api/send-payment-confirmation`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  email: booking.email,
+                  orderDetails: {
+                    orderId: orderId,
+                    totalAmount: data.orders?.[0]?.totalAmount || 0,
+                    currencyCode: data.orders?.[0]?.currencyCode || 'PLN',
+                    products: data.orders?.[0]?.products || []
+                  }
+                })
+              });
+              console.log('Email notification triggered from frontend');
+            } catch (error) {
+              console.error('Failed to trigger email notification:', error);
+            }
+          }
         } else if (payuStatus === 'PENDING' || payuStatus === 'WAITING_FOR_CONFIRMATION') {
           setOrderStatus('pending');
         } else {
