@@ -5,6 +5,12 @@ const axios = require('axios');
 const path = require('path');
 const { sendPaymentConfirmation, testEmailConnection } = require('./emailService');
 
+console.log('🚀 Starting PDW Server...');
+console.log('Node version:', process.version);
+console.log('Environment:', process.env.NODE_ENV);
+console.log('Port:', process.env.PORT || 3001);
+console.log('Express version:', require('express/package.json').version);
+
 const app = express();
 const port = process.env.PORT || 3001; // Backend port
 
@@ -68,6 +74,8 @@ if (!PAYU_CLIENT_ID || !PAYU_CLIENT_SECRET || !PAYU_MERCHANT_POS_ID) {
   await testEmailConnection();
 })();
 
+console.log('🔍 Starting route registration...');
+
 // Store OAuth token in memory (in production, use Redis or database)
 let accessToken = null;
 let tokenExpiry = null;
@@ -119,6 +127,7 @@ async function getAccessToken() {
 const IS_TEST_MODE = process.env.TEST_MODE === 'true';
 
 // Endpoint to create a PayU order
+console.log('Registering route: POST /api/create-order');
 app.post('/api/create-order', async (req, res) => {
   const { 
     customerIp, 
@@ -300,6 +309,7 @@ app.post('/api/create-order', async (req, res) => {
 });
 
 // Endpoint to check order status
+console.log('Registering route: GET /api/order-status/:orderId');
 app.get('/api/order-status/:orderId', async (req, res) => {
   const { orderId } = req.params;
 
@@ -331,6 +341,7 @@ app.get('/api/order-status/:orderId', async (req, res) => {
 });
 
 // Webhook endpoint for PayU notifications
+console.log('Registering route: POST /api/payu-webhook');
 app.post('/api/payu-webhook', async (req, res) => {
   const timestamp = new Date().toISOString();
   
@@ -449,6 +460,7 @@ app.post('/api/payu-webhook', async (req, res) => {
   }
 });
 
+console.log('Registering route: GET /');
 app.get('/', (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, '../dist/index.html'));
@@ -477,6 +489,7 @@ let webhookLogs = [];
 const MAX_LOGS = 50;
 
 // Add webhook logs endpoint
+console.log('Registering route: GET /api/webhook-logs');
 app.get('/api/webhook-logs', (req, res) => {
   res.json({
     count: webhookLogs.length,
@@ -485,6 +498,7 @@ app.get('/api/webhook-logs', (req, res) => {
 });
 
 // Manual email trigger endpoint (fallback for when webhooks don't work)
+console.log('Registering route: POST /api/send-payment-confirmation');
 app.post('/api/send-payment-confirmation', async (req, res) => {
   const { email, orderDetails } = req.body;
   
@@ -524,12 +538,14 @@ app.post('/api/send-payment-confirmation', async (req, res) => {
 
 // Catch-all handler for SPA in production
 if (process.env.NODE_ENV === 'production') {
-  app.get('*', (req, res) => {
+  console.log('Registering route: GET * (SPA catch-all)');
+  app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, '../dist/index.html'));
   });
 }
 
 // Test email endpoint (for debugging)
+console.log('Registering route: POST /api/test-email');
 app.post('/api/test-email', async (req, res) => {
   const { email, orderId } = req.body;
   
@@ -585,6 +601,7 @@ app.post('/api/test-email', async (req, res) => {
 });
 
 // Enhanced test webhook endpoint to simulate PayU notifications
+console.log('Registering route: POST /api/test-webhook');
 app.post('/api/test-webhook', async (req, res) => {
   const { email, orderId, status = 'COMPLETED' } = req.body;
   
@@ -654,6 +671,14 @@ app.post('/api/test-webhook', async (req, res) => {
       error: error.message
     });
   }
+});
+
+console.log('🚀 All routes registered successfully!');
+
+// Add error handling for route registration issues
+app.use((err, req, res, next) => {
+  console.error('❌ Express error:', err);
+  res.status(500).json({ error: 'Internal server error', details: err.message });
 });
 
 app.listen(port, '0.0.0.0', () => {
