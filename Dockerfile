@@ -21,8 +21,12 @@ RUN apt-get update -qq && \
     apt-get install -y python-is-python3 pkg-config build-essential 
 
 # Install node modules
-COPY --link package.json package-lock.json .
-RUN npm install --production=false
+COPY --link package.json package-lock.json ./
+COPY --link server ./server
+# RUN npm install --production=false
+# RUN npm install --omit=dev
+RUN npm ci --include=dev
+RUN cd server && npm ci --production
 
 # Copy application code
 COPY --link . .
@@ -31,7 +35,7 @@ COPY --link . .
 RUN npm run build
 
 # Remove development dependencies
-RUN npm prune --production
+RUN npm prune --production && cd server && npm prune --production
 
 
 # Final stage for app image
