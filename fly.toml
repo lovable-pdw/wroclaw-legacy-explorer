@@ -4,12 +4,13 @@
 #
 
 app = 'pdw'
-primary_region = 'fra'
+primary_region = 'waw'
 
 [build]
 
 [env]
   PORT = '8080'
+  NODE_ENV = 'production'
 
 [http_service]
   internal_port = 8080

@@ -1,13 +1,14 @@
 // API Configuration
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 
   (import.meta.env.PROD 
-    ? window.location.origin 
+    ? 'https://pdw.fly.dev'  // Your Fly.io app URL
     : 'http://localhost:3001');
 
 console.log('🔧 API Configuration:', {
   isDev: !import.meta.env.PROD,
   apiBaseUrl: API_BASE_URL,
-  envViteApiUrl: import.meta.env.VITE_API_BASE_URL
+  envViteApiUrl: import.meta.env.VITE_API_BASE_URL,
+  windowOrigin: typeof window !== 'undefined' ? window.location.origin : 'N/A'
 });
 
 export const API_ENDPOINTS = {

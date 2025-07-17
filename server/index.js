@@ -537,12 +537,12 @@ app.post('/api/send-payment-confirmation', async (req, res) => {
 });
 
 // Catch-all handler for SPA in production
-if (process.env.NODE_ENV === 'production') {
-  console.log('Registering route: GET * (SPA catch-all)');
-  app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../dist/index.html'));
-  });
-}
+// if (process.env.NODE_ENV === 'production') {
+//   console.log('Registering route: GET /* (SPA catch-all)');
+//   app.get('/*', (req, res) => {
+//     res.sendFile(path.join(__dirname, '../dist/index.html'));
+//   });
+// }
 
 // Test email endpoint (for debugging)
 console.log('Registering route: POST /api/test-email');
