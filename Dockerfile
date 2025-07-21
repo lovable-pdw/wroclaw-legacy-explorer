@@ -31,7 +31,7 @@ RUN cd server && npm install --production
 COPY --link . .
 
 # Set the API URL for production build
-ENV VITE_API_BASE_URL=https://pdw.fly.dev
+# ENV VITE_API_BASE_URL=https://pdw.fly.dev
 
 # Build application
 RUN npm run build

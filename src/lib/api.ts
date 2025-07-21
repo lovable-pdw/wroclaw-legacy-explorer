@@ -1,7 +1,7 @@
 // API Configuration
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 
   (import.meta.env.PROD 
-    ? 'https://pdw.fly.dev'  // Your Fly.io app URL
+    ? window.location.origin  // Use same domain for Vercel
     : 'http://localhost:3001');
 
 console.log('🔧 API Configuration:', {
