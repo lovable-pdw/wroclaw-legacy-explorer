@@ -34,7 +34,7 @@ COPY --link . .
 # ENV VITE_API_BASE_URL=https://pdw.fly.dev
 
 # Build application
-RUN npm run build
+RUN npm run build 
 
 # Remove development dependencies
 RUN npm prune --production
