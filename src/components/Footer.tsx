@@ -1,5 +1,6 @@
-import { MapPin, Phone, Mail, FileText } from "lucide-react";
+import { MapPin, Phone, Mail, FileText, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -47,9 +48,7 @@ const Footer = () => {
                 </span>
               </div>
             </div>
-          </div>
-
-          {/* Quick Links */}
+          </div>          {/* Quick Links */}
           <div>
             <h3 className="text-lg font-semibold text-foreground mb-4">
               Dokumenty
@@ -60,10 +59,26 @@ const Footer = () => {
                 className="p-0 h-auto justify-start text-muted-foreground hover:text-primary"
                 asChild
               >
-                <a href="#" className="flex items-center gap-2">
+                <a 
+                  href="/regulamin.pdf" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2"
+                >
                   <FileText className="w-4 h-4" />
                   Regulamin (PDF)
                 </a>
+              </Button>
+              
+              <Button 
+                variant="ghost" 
+                className="p-0 h-auto justify-start text-muted-foreground hover:text-primary"
+                asChild
+              >
+                <Link to="/polityka-prywatnosci" className="flex items-center gap-2">
+                  <Shield className="w-4 h-4" />
+                  Polityka Prywatności
+                </Link>
               </Button>
             </div>
 
@@ -80,13 +95,29 @@ const Footer = () => {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="mt-8 pt-8 border-t border-primary/20 text-center">
-          <p className="text-muted-foreground">
-            © 2024 Projekt Dawny Wrocław. Wszystkie prawa zastrzeżone.
-          </p>
+        </div>        {/* Bottom Bar */}
+        <div className="mt-8 pt-8 border-t border-primary/20">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-muted-foreground text-center sm:text-left">
+              © 2025 Projekt Dawny Wrocław. Wszystkie prawa zastrzeżone.
+            </p>
+            <div className="flex gap-4 text-sm">
+              <Link 
+                to="/polityka-prywatnosci" 
+                className="text-muted-foreground hover:text-primary transition-colors duration-300"
+              >
+                Polityka Prywatności
+              </Link>
+              <a 
+                href="/regulamin.pdf" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors duration-300"
+              >
+                Regulamin
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
