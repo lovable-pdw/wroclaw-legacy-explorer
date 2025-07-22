@@ -44,48 +44,16 @@ const Footer = () => {
               <div className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-primary" />
                 <span className="text-muted-foreground">
-                  info@projektdawnywroclaw.pl
+                  kontakt@projektdawnywroclaw.pl
                 </span>
               </div>
             </div>
           </div>          {/* Quick Links */}
           <div>
             <h3 className="text-lg font-semibold text-foreground mb-4">
-              Dokumenty
+              PATRONAT
             </h3>
-            <div className="space-y-3">
-              <Button 
-                variant="ghost" 
-                className="p-0 h-auto justify-start text-muted-foreground hover:text-primary"
-                asChild
-              >
-                <a 
-                  href="/regulamin.pdf" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2"
-                >
-                  <FileText className="w-4 h-4" />
-                  Regulamin (PDF)
-                </a>
-              </Button>
-              
-              <Button 
-                variant="ghost" 
-                className="p-0 h-auto justify-start text-muted-foreground hover:text-primary"
-                asChild
-              >
-                <Link to="/polityka-prywatnosci" className="flex items-center gap-2">
-                  <Shield className="w-4 h-4" />
-                  Polityka Prywatności
-                </Link>
-              </Button>
-            </div>
-
             <div className="mt-6">
-              <h4 className="text-sm font-semibold text-foreground mb-3">
-                PATRONAT
-              </h4>
               <div className="flex gap-2 text-xs text-muted-foreground">
                 <span>Airport</span>
                 <span>•</span>
