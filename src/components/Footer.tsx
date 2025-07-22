@@ -33,6 +33,12 @@ const Footer = () => {
             </h3>
             <div className="space-y-3">
               <div className="flex items-center gap-3">
+                <MapPin className="w-5 h-5 text-primary" />
+                <span className="text-muted-foreground">
+                  PDW Sp. z o.o.
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-primary" />
                 <a 
                   href="tel:+48787975999"
@@ -53,15 +59,13 @@ const Footer = () => {
             <h3 className="text-lg font-semibold text-foreground mb-4">
               PATRONAT
             </h3>
-            <div className="mt-6">
-              <div className="flex gap-2 text-xs text-muted-foreground">
+              <div className="flex gap-2 text-muted-foreground">
                 <span>Airport</span>
                 <span>•</span>
                 <span>LEC</span>
                 <span>•</span>
                 <span>Fly</span>
               </div>
-            </div>
           </div>
         </div>        {/* Bottom Bar */}
         <div className="mt-8 pt-8 border-t border-primary/20">
