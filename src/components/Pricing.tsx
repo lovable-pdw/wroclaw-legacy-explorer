@@ -119,7 +119,7 @@ const Pricing = () => {
               <Button 
                 variant="outline" 
                 size="lg"
-                className="border-background text-background hover:bg-background hover:text-foreground"
+                className="border-background text-white hover:bg-background hover:text-foreground"
               >
                 ZAREZERWUJ GRUPĘ
               </Button>
