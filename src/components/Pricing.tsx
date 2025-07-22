@@ -14,14 +14,22 @@ const Pricing = () => {
       icon: <Users className="w-8 h-8" />,
       popular: false
     },
-    // {
-    //   title: "2 osoby",
-    //   subtitle: "1 tablet",
-    //   price: "139",
-    //   currency: "PLN",
-    //   icon: <Users className="w-8 h-8" />,
-    //   popular: false
-    // },
+    {
+      title: "2 osoby",
+      subtitle: "2 tablety",
+      price: "185",
+      currency: "PLN",
+      icon: <Users className="w-8 h-8" />,
+      popular: true
+    },
+    {
+      title: "3 osoby",
+      subtitle: "3 tablety",
+      price: "270",
+      currency: "PLN",
+      icon: <Users className="w-8 h-8" />,
+      popular: false
+    },
     {
       title: "Grupa",
       subtitle: "Grupa prywatna do 8 os.",
