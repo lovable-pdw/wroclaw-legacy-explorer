@@ -15,7 +15,14 @@ async function sendPaymentConfirmation(customerEmail: string, orderDetails: any)
   try {
     const cleanPassword = process.env.EMAIL_PASSWORD?.replace(/^['"]|['"]$/g, '') || '';
     
-    const transporter = nodemailer.createTransport({
+    console.log('🔧 Email config debug:');
+    console.log('- HOST:', process.env.EMAIL_HOST);
+    console.log('- PORT:', process.env.EMAIL_PORT);
+    console.log('- USER:', process.env.EMAIL_USER);
+    console.log('- FROM:', process.env.EMAIL_FROM);
+    console.log('- PASSWORD length:', cleanPassword.length);
+    
+    const transporter = nodemailer.createTransporter({
       host: process.env.EMAIL_HOST,
       port: parseInt(process.env.EMAIL_PORT || '465'),
       secure: true,
@@ -27,6 +34,11 @@ async function sendPaymentConfirmation(customerEmail: string, orderDetails: any)
         rejectUnauthorized: false
       }
     });
+    
+    // Test the connection
+    console.log('🔧 Testing SMTP connection...');
+    await transporter.verify();
+    console.log('✅ SMTP connection verified');
     
     const mailOptions = {
       from: {
@@ -55,11 +67,13 @@ async function sendPaymentConfirmation(customerEmail: string, orderDetails: any)
       `
     };
     
-    await transporter.sendMail(mailOptions);
-    console.log('Payment confirmation email sent successfully to:', customerEmail);
+    console.log('📧 Attempting to send email...');
+    const result = await transporter.sendMail(mailOptions);
+    console.log('📧 Email send result:', JSON.stringify(result, null, 2));
+    console.log('✅ Email sent successfully to:', customerEmail);
     return true;
   } catch (error) {
-    console.error('Failed to send payment confirmation email:', error);
+    console.error('❌ Failed to send email:', error);
     return false;
   }
 }
