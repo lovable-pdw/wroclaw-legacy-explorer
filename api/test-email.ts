@@ -1,10 +1,9 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
+import nodemailer from 'nodemailer';
 
 // Inline email test function for serverless environment
 const testEmailConnection = async (): Promise<boolean> => {
   try {
-    const nodemailer = require('nodemailer');
-    
     const cleanPassword = process.env.EMAIL_PASSWORD?.replace(/^['"]|['"]$/g, '') || '';
     
     console.log('Testing email configuration:', {
@@ -14,7 +13,7 @@ const testEmailConnection = async (): Promise<boolean> => {
       hasPassword: !!cleanPassword
     });
     
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: parseInt(process.env.EMAIL_PORT || '465'),
       secure: true,
