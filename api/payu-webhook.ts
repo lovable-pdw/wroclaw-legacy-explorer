@@ -57,9 +57,23 @@ async function sendPaymentConfirmation(customerEmail: string, orderDetails: any)
             <p>Potwierdzamy otrzymanie płatności za Twoje zamówienie.</p>
             <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin: 20px 0;">
               <h3>Szczegóły zamówienia:</h3>
-              <p><strong>Numer zamówienia:</strong> ${orderDetails.orderId}</p>
+              <p><strong>Termin:</strong> ${orderDetails.products}</p>
               <p><strong>Kwota:</strong> ${orderDetails.totalAmount ? (orderDetails.totalAmount / 100) : 'N/A'} PLN</p>
               <p><strong>Status:</strong> ${orderDetails.status}</p>
+            </div>
+            <div style="background-color: #e8f5e8; padding: 20px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #28a745;">
+              <h3 style="color: #155724; margin-top: 0;">📍 Informacje o wycieczce:</h3>
+              <p><strong>Gdzie:</strong> Pręgierz na Wrocławskim Rynku</p>
+              <p><strong>Kiedy:</strong> Proszę stawić się 5 minut przed ustaloną godziną wycieczki</p>
+              <p style="margin: 15px 0;">
+                <a href="https://maps.google.com/maps?q=Pręgierz,+Rynek,+Wrocław" 
+                   style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                  📍 Zobacz lokalizację w Google Maps
+                </a>
+              </p>
+              <p style="font-size: 14px; color: #6c757d;">
+                <em>Pręgierz to historyczny słup znajdujący się na środku Rynku we Wrocławiu.</em>
+              </p>
             </div>
             <p>Dziękujemy za wsparcie projektu Dawny Wrocław!</p>
           </div>

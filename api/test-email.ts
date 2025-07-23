@@ -37,21 +37,22 @@ const testEmailConnection = async (): Promise<{ connected: boolean, emailSent: b
         address: process.env.EMAIL_USER
       },
       to: 'piotr.sobolewski85@gmail.com',
-      subject: 'Test Email - Projekt Dawny Wrocław',
+      subject: 'Potwierdzenie płatności - Projekt Dawny Wrocław',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
           <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
             <h1 style="color: #2c3e50; text-align: center; margin-bottom: 30px;">
-              Email Test Successful!
+              Dziękujemy za płatność!
             </h1>
-            <p>This is a test email from your webhook service.</p>
+            <p>Szanowny Kliencie,</p>
+            <p>Potwierdzamy otrzymanie płatności za Twoje zamówienie.</p>
             <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin: 20px 0;">
-              <h3>Test Details:</h3>
-              <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
-              <p><strong>SMTP Host:</strong> ${process.env.EMAIL_HOST}</p>
-              <p><strong>From:</strong> ${process.env.EMAIL_USER}</p>
+              <h3>Szczegóły zamówienia:</h3>
+              <p><strong>Numer zamówienia:</strong> sad </p>
+              <p><strong>Kwota:</strong> adsad PLN</p>
+              <p><strong>Status:</strong>  sadas </p>
             </div>
-            <p>If you received this email, your SMTP configuration is working correctly!</p>
+            <p>Dziękujemy za wsparcie projektu Dawny Wrocław!</p>
           </div>
         </div>
       `
