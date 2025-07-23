@@ -9,35 +9,43 @@ const Pricing = () => {
     {
       title: "1 osoba",
       subtitle: "1 tablet",
-      price: "79",
+      price: "95",
       currency: "PLN",
       icon: <Users className="w-8 h-8" />,
       popular: false
     },
     {
       title: "2 osoby",
-      subtitle: "1 tablet",
-      price: "139",
+      subtitle: "2 tablety",
+      price: "185",
+      currency: "PLN",
+      icon: <Users className="w-8 h-8" />,
+      popular: true
+    },
+    {
+      title: "3 osoby",
+      subtitle: "3 tablety",
+      price: "270",
       currency: "PLN",
       icon: <Users className="w-8 h-8" />,
       popular: false
     },
     {
-      title: "Pakiet Rodzina",
-      subtitle: "2+2 osoby, 2 tablety",
-      price: "189",
-      currency: "PLN",
-      icon: <Tablet className="w-8 h-8" />,
-      popular: true
-    },
-    {
-      title: "Pakiet Rodzina +",
-      subtitle: "2+3 lub więcej (2 dorosłych), 2 tablety",
-      price: "199",
+      title: "Grupa",
+      subtitle: "Grupa prywatna do 8 os.",
+      price: "570",
       currency: "PLN",
       icon: <Tablet className="w-8 h-8" />,
       popular: false
-    }
+    },
+    // {
+    //   title: "Pakiet Rodzina +",
+    //   subtitle: "2+3 lub więcej (2 dorosłych), 2 tablety",
+    //   price: "199",
+    //   currency: "PLN",
+    //   icon: <Tablet className="w-8 h-8" />,
+    //   popular: false
+    // }
   ];
 
   return (
@@ -105,7 +113,7 @@ const Pricing = () => {
         </div>
 
         {/* Group Package Highlight */}
-        <Card className="bg-gradient-accent text-background shadow-glow">
+        {/* <Card className="bg-gradient-accent text-background shadow-glow">
           <CardContent className="p-8 text-center">
             <h3 className="text-2xl font-bold mb-4">Pakiet Grupa</h3>
             <p className="text-lg mb-4">powyżej 6 osób • 1 tablet na 2 osoby</p>
@@ -119,13 +127,13 @@ const Pricing = () => {
               <Button 
                 variant="outline" 
                 size="lg"
-                className="border-background text-background hover:bg-background hover:text-foreground"
+                className="border-background text-white hover:bg-background hover:text-foreground"
               >
                 ZAREZERWUJ GRUPĘ
               </Button>
             </Link>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
     </section>
   );

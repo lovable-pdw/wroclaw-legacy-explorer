@@ -31,3 +31,4 @@ deploy/
 *.njsproj
 *.sln
 *.sw?
+.vercel

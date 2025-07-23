@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { format } from "date-fns";
+import { pl } from "date-fns/locale";
 import { CalendarIcon, Clock, Users, Phone } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -23,7 +24,7 @@ const bookingSchema = z.object({
   date: z.date({
     required_error: "Wybierz datę wycieczki",
   }),
-  time: z.enum(["12:00", "16:00"], {
+  time: z.enum(["11:00 [IN ENGLISH]", "13:30 [IN ENGLISH]", "16:00 [IN ENGLISH]", "18:00 [PO POLSKU]"], {
     required_error: "Wybierz godzinę wycieczki",
   }),
   package: z.string({
@@ -39,11 +40,18 @@ const bookingSchema = z.object({
 type BookingFormData = z.infer<typeof bookingSchema>;
 
 const packages = [
-  { id: "1", name: "1 osoba", subtitle: "1 tablet", price: 79 },
-  { id: "2", name: "2 osoby", subtitle: "1 tablet", price: 139 },
-  { id: "family", name: "Pakiet Rodzina", subtitle: "2+2 osoby, 2 tablety", price: 189, popular: true },
-  { id: "family-plus", name: "Pakiet Rodzina +", subtitle: "2+3 lub więcej (2 dorosłych), 2 tablety", price: 199 },
-  { id: "group", name: "Pakiet Grupa", subtitle: "powyżej 6 osób • 1 tablet na 2 osoby", price: 40, perPerson: true },
+  { id: "1", name: "1 osoba", subtitle: "1 tablet", price: 95, popular: false },
+  { id: "2", name: "2 osoby", subtitle: "2 tablety", price: 185, popular: false },
+  { id: "3", name: "3 osoby", subtitle: "3 tablety", price: 270, popular: false },
+  { id: "4", name: "4 osoby", subtitle: "4 tablety", price: 350, popular: false },
+  { id: "5", name: "5 osób", subtitle: "5 tabletów", price: 425, popular: false },
+  { id: "6", name: "6 osób", subtitle: "6 tabletów", price: 500, popular: false },
+  // { id: "2", name: "2 osoby", subtitle: "1 tablet", price: 139 },
+  // { id: "family", name: "Pakiet Rodzina 2+2", subtitle: "2+2 osoby (2 dorosłych), 2 tablety", price: 199, popular: true },
+  // { id: "family-plus", name: "Pakiet Rodzina 2+3", subtitle: "2+3 osoby (2 dorosłych), 2 tablety", price: 229 },
+  // { id: "family-plus-plus", name: "Pakiet Rodzina 2+4", subtitle: "2+4 osoby (2 dorosłych), 2 tablety", price: 249 },
+  // { id: "group", name: "Pakiet Grupa", subtitle: "powyżej 6 osób • 1 tablet na 2 osoby", price: 40, perPerson: true },
+  { id: "group", name: "Pakiet Grupa", subtitle: "grupa do 8 osób", price: 570, perPerson: false },
 ];
 
 const Booking = () => {
@@ -84,7 +92,7 @@ const Booking = () => {
       // Create order with your backend
       const orderData = {
         customerIp,
-        description: `Rezerwacja: ${packageDetails.name} - ${format(data.date, "dd.MM.yyyy")} ${data.time}`,
+        description: `Rezerwacja: ${packageDetails.name} - ${format(data.date, "dd.MM.yyyy", { locale: pl })} ${data.time}`,
         currencyCode: "PLN",
         totalAmount: packageDetails.price * 100, // Convert to groszy (100 groszy = 1 PLN)
         products: [
@@ -186,23 +194,31 @@ const Booking = () => {
                                       "w-full pl-3 text-left font-normal",
                                       !field.value && "text-muted-foreground"
                                     )}
-                                  >
-                                    {field.value ? (
-                                      format(field.value, "dd.MM.yyyy")
+                                  >                                    {field.value ? (
+                                      format(field.value, "dd.MM.yyyy", { locale: pl })
                                     ) : (
                                       <span>Wybierz datę wycieczki</span>
                                     )}
                                     <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                   </Button>
                                 </FormControl>
-                              </PopoverTrigger>
-                              <PopoverContent className="w-auto p-0" align="start">                                <Calendar
+                              </PopoverTrigger>                              <PopoverContent className="w-auto p-0" align="start">                                <Calendar
                                   mode="single"
-                                  selected={field.value}                                  onSelect={(date) => {
+                                  selected={field.value}
+                                  weekStartsOn={1}
+                                  locale={pl}
+                                  onSelect={(date) => {
                                     field.onChange(date);
                                     setIsDatePickerOpen(false);
                                   }}
-                                  disabled={(date) => date < new Date()}
+                                  disabled={(date) => {
+                                    // Disable past dates
+                                    if (date < new Date()) return true;
+                                    // Disable weekdays (Monday=1, Tuesday=2, Wednesday=3, Thursday=4, Friday=5)
+                                    // Only allow weekends (Saturday=6, Sunday=0)
+                                    const dayOfWeek = date.getDay();
+                                    return dayOfWeek !== 0 && dayOfWeek !== 6;
+                                  }}
                                   initialFocus
                                   className="pointer-events-auto"
                                 />
@@ -223,8 +239,7 @@ const Booking = () => {
                         Wybierz godzinę
                       </CardTitle>
                     </CardHeader>
-                    <CardContent>
-                      <FormField
+                    <CardContent>                      <FormField
                         control={form.control}
                         name="time"
                         render={({ field }) => (
@@ -233,20 +248,34 @@ const Booking = () => {
                               <RadioGroup
                                 onValueChange={field.onChange}
                                 defaultValue={field.value}
-                                className="grid grid-cols-2 gap-4"
+                                className="grid grid-cols-1 gap-3"
                               >
                                 <div className="flex items-center space-x-2 border rounded-lg p-4 hover:bg-accent/10 transition-colors">
-                                  <RadioGroupItem value="12:00" id="time-12" />
-                                  <Label htmlFor="time-12" className="cursor-pointer flex-1">
-                                    <div className="font-semibold">12:00</div>
-                                    <div className="text-sm text-muted-foreground">Południe</div>
+                                  <RadioGroupItem value="11:00 [IN ENGLISH]" id="time-11" />
+                                  <Label htmlFor="time-11" className="cursor-pointer flex-1">
+                                    <div className="font-semibold">11:00</div>
+                                    <div className="text-sm text-muted-foreground">IN ENGLISH</div>
                                   </Label>
                                 </div>
                                 <div className="flex items-center space-x-2 border rounded-lg p-4 hover:bg-accent/10 transition-colors">
-                                  <RadioGroupItem value="16:00" id="time-16" />
+                                  <RadioGroupItem value="13:30 [IN ENGLISH]" id="time-1330" />
+                                  <Label htmlFor="time-1330" className="cursor-pointer flex-1">
+                                    <div className="font-semibold">13:30</div>
+                                    <div className="text-sm text-muted-foreground">IN ENGLISH</div>
+                                  </Label>
+                                </div>
+                                <div className="flex items-center space-x-2 border rounded-lg p-4 hover:bg-accent/10 transition-colors">
+                                  <RadioGroupItem value="16:00 [IN ENGLISH]" id="time-16" />
                                   <Label htmlFor="time-16" className="cursor-pointer flex-1">
                                     <div className="font-semibold">16:00</div>
-                                    <div className="text-sm text-muted-foreground">Popołudnie</div>
+                                    <div className="text-sm text-muted-foreground">IN ENGLISH</div>
+                                  </Label>
+                                </div>
+                                <div className="flex items-center space-x-2 border rounded-lg p-4 hover:bg-accent/10 transition-colors">
+                                  <RadioGroupItem value="18:00 [PO POLSKU]" id="time-18" />
+                                  <Label htmlFor="time-18" className="cursor-pointer flex-1">
+                                    <div className="font-semibold">18:00</div>
+                                    <div className="text-sm text-muted-foreground">PO POLSKU</div>
                                   </Label>
                                 </div>
                               </RadioGroup>
