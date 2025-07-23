@@ -1,14 +1,39 @@
 // API Configuration
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 
-  (import.meta.env.PROD 
-    ? window.location.origin  // Use same domain for Vercel
-    : 'http://localhost:3001');
+const getApiBaseUrl = () => {
+  // Check if we're in development mode
+  const isDev = import.meta.env.DEV;
+  
+  console.log('🔧 Environment Detection:', {
+    isDev,
+    mode: import.meta.env.MODE,
+    prod: import.meta.env.PROD,
+    viteApiUrl: import.meta.env.VITE_API_BASE_URL
+  });
 
-console.log('🔧 API Configuration:', {
-  isDev: !import.meta.env.PROD,
+  // If explicit API URL is set, use it
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL;
+  }
+
+  // Development: use local backend server
+  if (isDev) {
+    return 'http://localhost:3001';
+  }
+
+  // Production: use current domain (Vercel API routes)
+  if (typeof window !== 'undefined') {
+    return window.location.origin;
+  }
+
+  // SSR fallback
+  return 'https://projektdawnywroclaw.pl';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
+console.log('🔧 Final API Configuration:', {
   apiBaseUrl: API_BASE_URL,
-  envViteApiUrl: import.meta.env.VITE_API_BASE_URL,
-  windowOrigin: typeof window !== 'undefined' ? window.location.origin : 'N/A'
+  createOrderUrl: `${API_BASE_URL}/api/create-order`
 });
 
 export const API_ENDPOINTS = {

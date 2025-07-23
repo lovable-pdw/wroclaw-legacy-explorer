@@ -10,10 +10,19 @@ const SANDBOX_CREDENTIALS = {
   merchantPosId: '300746'
 };
 
+console.log('Environment Variables Debug:', {
+  NODE_ENV: process.env.NODE_ENV,
+  VERCEL_ENV: process.env.VERCEL_ENV,
+  FRONTEND_URL: process.env.FRONTEND_URL,
+  PAYU_SANDBOX: process.env.PAYU_SANDBOX,
+  hasPayuClientId: !!process.env.PAYU_CLIENT_ID,
+  hasPayuClientSecret: !!process.env.PAYU_CLIENT_SECRET
+});
+
 const PAYU_CLIENT_ID = process.env.PAYU_CLIENT_ID || (IS_SANDBOX ? SANDBOX_CREDENTIALS.clientId : null);
 const PAYU_CLIENT_SECRET = process.env.PAYU_CLIENT_SECRET || (IS_SANDBOX ? SANDBOX_CREDENTIALS.clientSecret : null);
 const PAYU_MERCHANT_POS_ID = process.env.PAYU_MERCHANT_POS_ID || (IS_SANDBOX ? SANDBOX_CREDENTIALS.merchantPosId : null);
-const FRONTEND_URL = process.env.FRONTEND_URL || 'https://www.projektdawnywroclaw.pl';
+const FRONTEND_URL = process.env.FRONTEND_URL || 'https://projektdawnywroclaw.pl';
 const IS_TEST_MODE = process.env.TEST_MODE === 'true';
 
 // Log configuration for debugging
@@ -145,7 +154,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
       }),
       continueUrl: `${FRONTEND_URL}/payment-success`,
-      notifyUrl: `https://www.projektdawnywroclaw.pl/api/payu-webhook`
+      notifyUrl: `https://projektdawnywroclaw.pl/api/payu-webhook`
     };
 
     console.log('Creating PayU order with payload:', JSON.stringify(orderPayload, null, 2));    // Create order with PayU
