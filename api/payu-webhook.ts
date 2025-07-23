@@ -1,4 +1,5 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
+import nodemailer from 'nodemailer';
 
 // Import webhook logging function
 function addWebhookLog(logEntry: any) {
@@ -12,11 +13,9 @@ function addWebhookLog(logEntry: any) {
 // Inline email service for webhook notifications
 async function sendPaymentConfirmation(customerEmail: string, orderDetails: any): Promise<boolean> {
   try {
-    const nodemailer = require('nodemailer');
-    
     const cleanPassword = process.env.EMAIL_PASSWORD?.replace(/^['"]|['"]$/g, '') || '';
     
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: parseInt(process.env.EMAIL_PORT || '465'),
       secure: true,

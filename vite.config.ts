@@ -14,15 +14,14 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-  },
-  server: {
+  },  server: {
     host: "::",
     port: 8080,
     proxy: {
       '/api': {
-        target: 'http://localhost:3001', // Your backend server address
+        target: 'http://localhost:3001',
         changeOrigin: true,
-        // rewrite: (path) => path.replace(/^\/api/, '') // Uncomment if your backend doesn't expect /api prefix
+        secure: false
       }
     }
   }

@@ -1,6 +1,6 @@
 // API Configuration
+// API Configuration
 const getApiBaseUrl = () => {
-  // Check if we're in development mode
   const isDev = import.meta.env.DEV;
   
   console.log('🔧 Environment Detection:', {
@@ -10,14 +10,13 @@ const getApiBaseUrl = () => {
     viteApiUrl: import.meta.env.VITE_API_BASE_URL
   });
 
-  // If explicit API URL is set, use it
-  if (import.meta.env.VITE_API_BASE_URL) {
+  // If explicit API URL is set AND it's not localhost in production, use it
+  if (import.meta.env.VITE_API_BASE_URL && 
+      (isDev || !import.meta.env.VITE_API_BASE_URL.includes('localhost'))) {
     return import.meta.env.VITE_API_BASE_URL;
-  }
-
-  // Development: use local backend server
+  }  // Development: use relative URLs (Vite proxy will handle routing)
   if (isDev) {
-    return 'http://localhost:3001';
+    return ''; // Empty string for relative URLs like /api/create-order
   }
 
   // Production: use current domain (Vercel API routes)

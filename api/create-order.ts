@@ -154,7 +154,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
       }),
       continueUrl: `${FRONTEND_URL}/payment-success`,
-      notifyUrl: `https://projektdawnywroclaw.pl/api/payu-webhook`
+      notifyUrl: `${FRONTEND_URL}/api/payu-webhook`
     };
 
     console.log('Creating PayU order with payload:', JSON.stringify(orderPayload, null, 2));    // Create order with PayU
