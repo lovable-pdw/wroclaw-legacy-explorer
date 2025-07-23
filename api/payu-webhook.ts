@@ -129,6 +129,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const status = order.status;
       
       console.log(`=== Order Status Update ===`);
+      console.log(`BODY: ${body}`);
       console.log(`Order ID: ${orderId}`);
       console.log(`Status: ${status}`);
       console.log(`Buyer Email: ${order.buyer?.email || 'Not provided'}`);        // Handle successful payment

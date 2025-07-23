@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { CheckCircle, AlertCircle, Clock, ArrowLeft } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,11 +9,30 @@ import API_BASE_URL from "@/lib/api";
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [orderStatus, setOrderStatus] = useState<'loading' | 'success' | 'pending' | 'failed'>('loading');
   const [orderDetails, setOrderDetails] = useState<any>(null);
   const [bookingData, setBookingData] = useState<any>(null);
-
   useEffect(() => {
+    // Check for error parameters first (PayU cancellation or failure)
+    const error = searchParams.get('error');
+    const errorCode = searchParams.get('error_code');
+    const errorDesc = searchParams.get('error_description');
+    const cancelled = searchParams.get('cancelled');
+    const status = searchParams.get('status');
+    
+    // If there's an error parameter or explicit cancellation, redirect to main page
+    if (error || errorCode || cancelled === 'true' || status === 'CANCELLED' || status === 'REJECTED') {
+      console.log('Payment cancelled or failed:', { error, errorCode, errorDesc, cancelled, status });
+      // Clear any stored booking data
+      localStorage.removeItem('bookingData');
+      // Redirect to main page after a short delay to show the message
+      setTimeout(() => {
+        navigate('/', { replace: true });
+      }, 2000);
+      return;
+    }
+
     // Get stored booking data
     const storedBookingData = localStorage.getItem('bookingData');
     if (storedBookingData) {
@@ -28,7 +47,7 @@ const PaymentSuccess = () => {
       // If no orderId, assume success for now
       setOrderStatus('success');
     }
-  }, [searchParams]);  const checkOrderStatus = async (orderId: string) => {
+  }, [searchParams, navigate]);const checkOrderStatus = async (orderId: string) => {
     try {
       const response = await fetch(API_ENDPOINTS.ORDER_STATUS(orderId));
       if (response.ok) {
@@ -75,9 +94,17 @@ const PaymentSuccess = () => {
       console.error('Error checking order status:', error);
       setOrderStatus('failed');
     }
-  };
+  };  const getStatusIcon = () => {
+    // Check if we're redirecting due to cancellation
+    const error = searchParams.get('error');
+    const errorCode = searchParams.get('error_code');
+    const cancelled = searchParams.get('cancelled');
+    const status = searchParams.get('status');
+    
+    if (error || errorCode || cancelled === 'true' || status === 'CANCELLED' || status === 'REJECTED') {
+      return <AlertCircle className="w-16 h-16 text-orange-500 mx-auto" />;
+    }
 
-  const getStatusIcon = () => {
     switch (orderStatus) {
       case 'success':
         return <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />;
@@ -88,9 +115,20 @@ const PaymentSuccess = () => {
       default:
         return <Clock className="w-16 h-16 text-blue-500 mx-auto animate-spin" />;
     }
-  };
+  };  const getStatusMessage = () => {
+    // Check if we're redirecting due to cancellation
+    const error = searchParams.get('error');
+    const errorCode = searchParams.get('error_code');
+    const cancelled = searchParams.get('cancelled');
+    const status = searchParams.get('status');
+    
+    if (error || errorCode || cancelled === 'true' || status === 'CANCELLED' || status === 'REJECTED') {
+      return {
+        title: 'Płatność anulowana',
+        description: 'Przekierowujemy Cię z powrotem do strony głównej...',
+      };
+    }
 
-  const getStatusMessage = () => {
     switch (orderStatus) {
       case 'success':
         return {

@@ -151,8 +151,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           firstName: buyer.firstName,
           lastName: buyer.lastName,
           language: buyer.language || 'pl'
-        }
-      }),
+        }      }),
       continueUrl: `${FRONTEND_URL}/payment-success`,
       notifyUrl: `${FRONTEND_URL}/api/payu-webhook`
     };
