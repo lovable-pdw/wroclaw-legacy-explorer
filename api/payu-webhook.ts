@@ -57,7 +57,9 @@ async function sendPaymentConfirmation(customerEmail: string, orderDetails: any)
             <p>Potwierdzamy otrzymanie płatności za Twoje zamówienie.</p>
             <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin: 20px 0;">
               <h3>Szczegóły zamówienia:</h3>
-              <p><strong>Termin:</strong> ${orderDetails.products}</p>
+              <p><strong>1:</strong> ${orderDetails.products[0].name}</p>
+              <p><strong>2:</strong> ${orderDetails.description}</p>
+              <p><strong>3:</strong> ${orderDetails.products[0]}</p>
               <p><strong>Kwota:</strong> ${orderDetails.totalAmount ? (orderDetails.totalAmount / 100) : 'N/A'} PLN</p>
               <p><strong>Status:</strong> ${orderDetails.status}</p>
             </div>
