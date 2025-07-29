@@ -43,7 +43,7 @@ async function getAccessToken(): Promise<string> {
     accessToken = data.access_token;
     tokenExpiry = Date.now() + (data.expires_in - 60) * 1000;
     
-    console.log('New OAuth token obtained for order status');
+    // console.log('New OAuth token obtained for order status');
     return accessToken;
   } catch (error) {
     console.error('OAuth Token Error:', error);
@@ -72,7 +72,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    console.log('🔍 Checking order status for:', orderId);
+    // console.log('🔍 Checking order status for:', orderId);
     
     const token = await getAccessToken();
 
@@ -90,7 +90,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const data = await payuResponse.json();
-    console.log('✅ Order status retrieved successfully');
+    // console.log('✅ Order status retrieved successfully');
     
     return res.status(200).json(data);
 

@@ -10,14 +10,14 @@ const SANDBOX_CREDENTIALS = {
   merchantPosId: '300746'
 };
 
-console.log('Environment Variables Debug:', {
-  NODE_ENV: process.env.NODE_ENV,
-  VERCEL_ENV: process.env.VERCEL_ENV,
-  FRONTEND_URL: process.env.FRONTEND_URL,
-  PAYU_SANDBOX: process.env.PAYU_SANDBOX,
-  hasPayuClientId: !!process.env.PAYU_CLIENT_ID,
-  hasPayuClientSecret: !!process.env.PAYU_CLIENT_SECRET
-});
+// console.log('Environment Variables Debug:', {
+//   NODE_ENV: process.env.NODE_ENV,
+//   VERCEL_ENV: process.env.VERCEL_ENV,
+//   FRONTEND_URL: process.env.FRONTEND_URL,
+//   PAYU_SANDBOX: process.env.PAYU_SANDBOX,
+//   hasPayuClientId: !!process.env.PAYU_CLIENT_ID,
+//   hasPayuClientSecret: !!process.env.PAYU_CLIENT_SECRET
+// });
 
 const PAYU_CLIENT_ID = process.env.PAYU_CLIENT_ID || (IS_SANDBOX ? SANDBOX_CREDENTIALS.clientId : null);
 const PAYU_CLIENT_SECRET = process.env.PAYU_CLIENT_SECRET || (IS_SANDBOX ? SANDBOX_CREDENTIALS.clientSecret : null);
@@ -26,14 +26,14 @@ const FRONTEND_URL = process.env.FRONTEND_URL || 'https://projektdawnywroclaw.pl
 const IS_TEST_MODE = process.env.TEST_MODE === 'true';
 
 // Log configuration for debugging
-console.log('PayU Configuration:', {
-  environment: IS_SANDBOX ? 'SANDBOX' : 'PRODUCTION',
-  baseUrl: PAYU_BASE_URL,
-  clientId: PAYU_CLIENT_ID,
-  merchantPosId: PAYU_MERCHANT_POS_ID,
-  hasClientSecret: !!PAYU_CLIENT_SECRET,
-  usingSandboxCredentials: IS_SANDBOX && !process.env.PAYU_CLIENT_ID
-});
+// console.log('PayU Configuration:', {
+//   environment: IS_SANDBOX ? 'SANDBOX' : 'PRODUCTION',
+//   baseUrl: PAYU_BASE_URL,
+//   clientId: PAYU_CLIENT_ID,
+//   merchantPosId: PAYU_MERCHANT_POS_ID,
+//   hasClientSecret: !!PAYU_CLIENT_SECRET,
+//   usingSandboxCredentials: IS_SANDBOX && !process.env.PAYU_CLIENT_ID
+// });
 
 // OAuth token storage (in production, use Redis)
 let accessToken: string | null = null;
@@ -65,7 +65,7 @@ async function getAccessToken(): Promise<string> {
     accessToken = data.access_token;
     tokenExpiry = Date.now() + (data.expires_in - 60) * 1000;
     
-    console.log('New OAuth token obtained');
+    // console.log('New OAuth token obtained');
     return accessToken;
   } catch (error) {
     console.error('OAuth Token Error:', error);
@@ -128,7 +128,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (IS_TEST_MODE) {
       finalAmount = 100; // 1 zl
       finalDescription = `[TEST] ${description}`;
-      console.log('🧪 TEST MODE: Using 1 zloty for production PayU test');
+      // console.log('🧪 TEST MODE: Using 1 zloty for production PayU test');
     }
 
     // Create order payload
@@ -156,7 +156,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       notifyUrl: `${FRONTEND_URL}/api/payu-webhook`
     };
 
-    console.log('Creating PayU order with payload:', JSON.stringify(orderPayload, null, 2));    // Create order with PayU
+    // console.log('Creating PayU order with payload:', JSON.stringify(orderPayload, null, 2));    // Create order with PayU
     const payuResponse = await fetch(`${PAYU_BASE_URL}/api/v2_1/orders`, {
       method: 'POST',
       headers: {
@@ -167,13 +167,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       redirect: 'manual'
     });
 
-    console.log('PayU response status:', payuResponse.status);
-    console.log('PayU response headers:', Object.fromEntries(payuResponse.headers.entries()));
+    // console.log('PayU response status:', payuResponse.status);
+    // console.log('PayU response headers:', Object.fromEntries(payuResponse.headers.entries()));
 
     // Handle 302 redirect (normal PayU response)
     if (payuResponse.status === 302) {
       const redirectUri = payuResponse.headers.get('location');
-      console.log('✅ PayU order created successfully! Redirect URL:', redirectUri);
+      // console.log('✅ PayU order created successfully! Redirect URL:', redirectUri);
       
       return res.status(200).json({
         status: { statusCode: 'SUCCESS' },
@@ -185,7 +185,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Handle JSON response (alternative flow)
     else if (payuResponse.status === 200) {
       const data = await payuResponse.json();
-      console.log('✅ PayU JSON response received:', data);
+      // console.log('✅ PayU JSON response received:', data);
       
       return res.status(200).json({
         status: data.status || { statusCode: 'SUCCESS' },
@@ -196,8 +196,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
     // Handle unexpected response
     else {
-      console.log('⚠️ Unexpected PayU response format');
-      console.log('Status:', payuResponse.status);
+      // console.log('⚠️ Unexpected PayU response format');
+      // console.log('Status:', payuResponse.status);
       
       return res.status(200).json({
         status: { statusCode: 'SUCCESS' },

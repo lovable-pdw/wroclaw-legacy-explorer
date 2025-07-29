@@ -6,12 +6,12 @@ const testEmailConnection = async (): Promise<{ connected: boolean, emailSent: b
   try {
     const cleanPassword = process.env.EMAIL_PASSWORD?.replace(/^['"]|['"]$/g, '') || '';
     
-    console.log('Testing email configuration:', {
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
-      user: process.env.EMAIL_USER,
-      hasPassword: !!cleanPassword
-    });
+    // console.log('Testing email configuration:', {
+    //   host: process.env.EMAIL_HOST,
+    //   port: process.env.EMAIL_PORT,
+    //   user: process.env.EMAIL_USER,
+    //   hasPassword: !!cleanPassword
+    // });
     
     const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
@@ -27,10 +27,10 @@ const testEmailConnection = async (): Promise<{ connected: boolean, emailSent: b
     });
     
     await transporter.verify();
-    console.log('Email server connection verified successfully');
+    // console.log('Email server connection verified successfully');
     
     // Send test email
-    console.log('Sending test email...');
+    // console.log('Sending test email...');
     const mailOptions = {
       from: {
         name: 'Projekt Dawny Wrocław - Test',
@@ -59,7 +59,7 @@ const testEmailConnection = async (): Promise<{ connected: boolean, emailSent: b
     };
     
     const emailResult = await transporter.sendMail(mailOptions);
-    console.log('Test email sent successfully:', JSON.stringify(emailResult, null, 2));
+    // console.log('Test email sent successfully:', JSON.stringify(emailResult, null, 2));
     
     return { connected: true, emailSent: true, emailResult };
   } catch (error) {
@@ -82,11 +82,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
     try {
-    console.log('Testing email service connection...');
+    // console.log('Testing email service connection...');
     
     const testResult = await testEmailConnection();
     
-    console.log('Email service test result:', testResult);
+    // console.log('Email service test result:', testResult);
     
     res.status(200).json({
       message: 'Email service test completed',

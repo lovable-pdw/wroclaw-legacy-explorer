@@ -3,12 +3,12 @@
 const getApiBaseUrl = () => {
   const isDev = import.meta.env.DEV;
   
-  console.log('🔧 Environment Detection:', {
-    isDev,
-    mode: import.meta.env.MODE,
-    prod: import.meta.env.PROD,
-    viteApiUrl: import.meta.env.VITE_API_BASE_URL
-  });
+  // console.log('🔧 Environment Detection:', {
+  //   isDev,
+  //   mode: import.meta.env.MODE,
+  //   prod: import.meta.env.PROD,
+  //   viteApiUrl: import.meta.env.VITE_API_BASE_URL
+  // });
 
   // If explicit API URL is set AND it's not localhost in production, use it
   if (import.meta.env.VITE_API_BASE_URL && 
@@ -30,10 +30,10 @@ const getApiBaseUrl = () => {
 
 const API_BASE_URL = getApiBaseUrl();
 
-console.log('🔧 Final API Configuration:', {
-  apiBaseUrl: API_BASE_URL,
-  createOrderUrl: `${API_BASE_URL}/api/create-order`
-});
+// console.log('🔧 Final API Configuration:', {
+//   apiBaseUrl: API_BASE_URL,
+//   createOrderUrl: `${API_BASE_URL}/api/create-order`
+// });
 
 export const API_ENDPOINTS = {
   CREATE_ORDER: `${API_BASE_URL}/api/create-order`,

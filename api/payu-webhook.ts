@@ -4,10 +4,10 @@ import nodemailer from 'nodemailer';
 // Import webhook logging function
 function addWebhookLog(logEntry: any) {
   // This would be shared with webhook-logs.ts in a real implementation
-  console.log('=== PayU Webhook Received ===');
-  console.log('Timestamp:', logEntry.timestamp);
-  console.log('Headers:', JSON.stringify(logEntry.headers, null, 2));
-  console.log('Body:', JSON.stringify(logEntry.body, null, 2));
+  // console.log('=== PayU Webhook Received ===');
+  // console.log('Timestamp:', logEntry.timestamp);
+  // console.log('Headers:', JSON.stringify(logEntry.headers, null, 2));
+  // console.log('Body:', JSON.stringify(logEntry.body, null, 2));
 }
 
 // Inline email service for webhook notifications
@@ -15,12 +15,12 @@ async function sendPaymentConfirmation(customerEmail: string, orderDetails: any)
   try {
     const cleanPassword = process.env.EMAIL_PASSWORD?.replace(/^['"]|['"]$/g, '') || '';
     
-    console.log('🔧 Email config debug:');
-    console.log('- HOST:', process.env.EMAIL_HOST);
-    console.log('- PORT:', process.env.EMAIL_PORT);
-    console.log('- USER:', process.env.EMAIL_USER);
-    console.log('- FROM:', process.env.EMAIL_FROM);
-    console.log('- PASSWORD length:', cleanPassword.length);
+    // console.log('🔧 Email config debug:');
+    // console.log('- HOST:', process.env.EMAIL_HOST);
+    // console.log('- PORT:', process.env.EMAIL_PORT);
+    // console.log('- USER:', process.env.EMAIL_USER);
+    // console.log('- FROM:', process.env.EMAIL_FROM);
+    // console.log('- PASSWORD length:', cleanPassword.length);
     
     const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
@@ -36,9 +36,9 @@ async function sendPaymentConfirmation(customerEmail: string, orderDetails: any)
     });
     
     // Test the connection
-    console.log('🔧 Testing SMTP connection...');
+    // console.log('🔧 Testing SMTP connection...');
     await transporter.verify();
-    console.log('✅ SMTP connection verified');
+    // console.log('✅ SMTP connection verified');
     
     const mailOptions = {
       from: {
@@ -81,10 +81,10 @@ async function sendPaymentConfirmation(customerEmail: string, orderDetails: any)
       `
     };
     
-    console.log('📧 Attempting to send email...');
+    // console.log('📧 Attempting to send email...');
     const result = await transporter.sendMail(mailOptions);
-    console.log('📧 Email send result:', JSON.stringify(result, null, 2));
-    console.log('✅ Email sent successfully to:', customerEmail);
+    // console.log('📧 Email send result:', JSON.stringify(result, null, 2));
+    // console.log('✅ Email sent successfully to:', customerEmail);
     return true;
   } catch (error) {
     console.error('❌ Failed to send email:', error);
@@ -128,26 +128,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const orderId = order.orderId;
       const status = order.status;
       
-      console.log(`=== Order Status Update ===`);
-      console.log(`BODY: ${body}`);
-      console.log(`Order ID: ${orderId}`);
-      console.log(`Status: ${status}`);
-      console.log(`Buyer Email: ${order.buyer?.email || 'Not provided'}`);        // Handle successful payment
+      // console.log(`=== Order Status Update ===`);
+      // console.log(`BODY: ${body}`);
+      // console.log(`Order ID: ${orderId}`);
+      // console.log(`Status: ${status}`);
+      // console.log(`Buyer Email: ${order.buyer?.email || 'Not provided'}`);        // Handle successful payment
         if (status === 'COMPLETED') {
-          console.log('✅ Payment completed successfully for order:', orderId);
+          // console.log('✅ Payment completed successfully for order:', orderId);
           
           // Extract customer email from buyer info
           let customerEmail: string | null = null;
           if (order.buyer && order.buyer.email) {
             customerEmail = order.buyer.email;
-            console.log('📧 Customer email found in notification:', customerEmail);
+            // console.log('📧 Customer email found in notification:', customerEmail);
           } else {
-            console.log('⚠️ No buyer email in notification');
+            // console.log('⚠️ No buyer email in notification');
           }
           
           // Send payment confirmation email
           if (customerEmail) {
-            console.log('📧 Sending payment confirmation email to:', customerEmail);
+            // console.log('📧 Sending payment confirmation email to:', customerEmail);
             const orderDetails = {
               orderId: orderId,
               totalAmount: Number(order.totalAmount) || 0,
@@ -159,9 +159,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             try {
               const emailSent = await sendPaymentConfirmation(customerEmail, orderDetails);
               if (emailSent) {
-                console.log('✅ Payment confirmation email sent successfully');
+                // console.log('✅ Payment confirmation email sent successfully');
               } else {
-                console.log('❌ Failed to send payment confirmation email');
+                // console.log('❌ Failed to send payment confirmation email');
               }
             } catch (emailError) {
               console.error('❌ Error sending payment confirmation email:', emailError);
@@ -170,11 +170,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             console.warn('⚠️ No customer email found in order data, skipping email notification');
           }
         } else {
-          console.log(`ℹ️ Order ${orderId} status is ${status}, no email action needed`);
+          // console.log(`ℹ️ Order ${orderId} status is ${status}, no email action needed`);
         }
     } else {
-      console.log('⚠️ No order information in notification');
-      console.log('Raw notification structure:', Object.keys(body || {}));
+      // console.log('⚠️ No order information in notification');
+      // console.log('Raw notification structure:', Object.keys(body || {}));
     }
     
     // Always respond with 200 OK to acknowledge receipt

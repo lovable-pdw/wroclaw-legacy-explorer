@@ -23,7 +23,7 @@ const PaymentSuccess = () => {
     
     // If there's an error parameter or explicit cancellation, redirect to main page
     if (error || errorCode || cancelled === 'true' || status === 'CANCELLED' || status === 'REJECTED') {
-      console.log('Payment cancelled or failed:', { error, errorCode, errorDesc, cancelled, status });
+      // console.log('Payment cancelled or failed:', { error, errorCode, errorDesc, cancelled, status });
       // Clear any stored booking data
       localStorage.removeItem('bookingData');
       // Redirect to main page after a short delay to show the message
@@ -77,7 +77,7 @@ const PaymentSuccess = () => {
                   }
                 })
               });
-              console.log('Email notification triggered from frontend');
+              // console.log('Email notification triggered from frontend');
             } catch (error) {
               console.error('Failed to trigger email notification:', error);
             }
