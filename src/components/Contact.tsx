@@ -88,10 +88,10 @@ const Contact = () => {
                   <div>
                     <p className="font-semibold text-foreground">Email</p>
                     <a
-                      href="mailto:kontakt@projektdawnywroclaw.pl"
+                      href="mailto:pdw@pdw.wroc.pl"
                       className="text-sm text-muted-foreground hover:text-primary transition-colors"
                     >
-                      kontakt@projektdawnywroclaw.pl
+                      pdw@pdw.wroc.pl
                     </a>
                   </div>
                 </div>

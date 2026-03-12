@@ -44,10 +44,10 @@ const Footer = () => {
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-white/40" />
                 <a
-                  href="mailto:kontakt@projektdawnywroclaw.pl"
+                  href="mailto:pdw@pdw.wroc.pl"
                   className="text-sm text-white/60 hover:text-white transition-colors"
                 >
-                  kontakt@projektdawnywroclaw.pl
+                  pdw@pdw.wroc.pl
                 </a>
               </div>
             </div>

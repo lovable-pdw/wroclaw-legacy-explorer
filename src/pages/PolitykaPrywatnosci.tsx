@@ -31,7 +31,7 @@ const PolitykaPrywatnosci = () => {
                 </h2>
                 <p className="text-gray-700 leading-relaxed">
                   Administratorem danych osobowych jest Projekt Dawny Wrocław.<br/>
-                  Kontakt: <a href="mailto:kontakt@projektdawnywroclaw.pl" className="text-amber-600 hover:text-amber-800">kontakt@projektdawnywroclaw.pl</a>
+                  Kontakt: <a href="mailto:pdw@pdw.wroc.pl" className="text-amber-600 hover:text-amber-800">pdw@pdw.wroc.pl</a>
                 </p>
               </section>
 
@@ -141,8 +141,8 @@ const PolitykaPrywatnosci = () => {
                 </h2>
                 <p className="text-gray-700 leading-relaxed">
                   W sprawach dotyczących ochrony danych osobowych można kontaktować się pod adresem: 
-                  <a href="mailto:kontakt@projektdawnywroclaw.pl" className="text-amber-600 hover:text-amber-800 ml-1">
-                    kontakt@projektdawnywroclaw.pl
+                  <a href="mailto:pdw@pdw.wroc.pl" className="text-amber-600 hover:text-amber-800 ml-1">
+                    pdw@pdw.wroc.pl
                   </a>
                 </p>
               </section>
