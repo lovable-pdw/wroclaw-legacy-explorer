@@ -1,68 +1,64 @@
 import { Button } from "@/components/ui/button";
-import { Phone } from "lucide-react";
-import { Link } from "react-router-dom";
-import heroImage from "@/assets/wroclaw-hero.jpg";
+import { ArrowRight, MapPin } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${heroImage})` }}
-      >
-        <div className="absolute inset-0 bg-gradient-overlay" />
-      </div>
+    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-900">
+      {/* Subtle pattern overlay */}
+      <div className="absolute inset-0 opacity-10" style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+      }} />
 
-      {/* Content */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="animate-fade-in-up">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-            <span className="block text-foreground">HISTORYCZNE</span>
-            <span className="block text-primary text-5xl md:text-7xl lg:text-8xl">
-              WYCIECZKI
-            </span>
-            <span className="block text-foreground">PO WROCŁAWIU</span>
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-muted-foreground mb-4 font-light">
-            Z TABLETEM I PRZEWODNIKIEM
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
-            <Link to="/booking">
-              <Button 
-                variant="hero" 
-                size="lg"
-                className="text-lg px-8 py-4 animate-glow-pulse"
-              >
-                ZAREZERWUJ WYCIECZKĘ
-              </Button>
-            </Link>
-            
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Phone className="w-5 h-5" />
-              <span className="text-lg">PRZEZ TELEFON</span>
-            </div>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="max-w-3xl">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-emerald-200 text-sm font-medium mb-8 animate-fade-in">
+            <MapPin className="w-4 h-4" />
+            Dla miast, powiatów, gmin i firm prywatnych
           </div>
 
-          <div className="mt-6">
-            <a 
-              href="tel:+48787975999" 
-              className="text-2xl md:text-3xl font-bold text-primary hover:text-accent transition-colors duration-300"
-            >
-              +48 787 975 999
+          <p className="text-emerald-300 font-semibold text-sm uppercase tracking-widest mb-4 animate-fade-in">
+            Aplikacja Turystyczna
+          </p>
+
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 animate-fade-in-up">
+            Zwiedzaj{" "}
+            <span className="text-amber-400">Dolny Śląsk</span>
+          </h1>
+
+          <p className="text-lg md:text-xl text-emerald-100/90 mb-4 max-w-2xl leading-relaxed animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
+            Nowoczesne narzędzie promocji turystyki dla miast, powiatów, gmin i firm prywatnych.
+          </p>
+
+          <p className="text-base text-emerald-100/60 mb-10 max-w-2xl leading-relaxed animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+            Dzięki technologii rekonstrukcji 3D, panoramom 360° oraz inteligentnej nawigacji GPS
+            użytkownicy odkrywają historię miejsc bezpośrednio w przestrzeni miasta — patrząc na nią
+            przez ekran smartfona.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
+            <a href="#kontakt">
+              <Button
+                size="lg"
+                className="bg-amber-500 hover:bg-amber-400 text-emerald-950 font-bold text-base px-8 h-12"
+              >
+                Zostań partnerem
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </a>
+            <a href="#produkt">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-white/30 text-white hover:bg-white/10 font-semibold text-base px-8 h-12 bg-transparent"
+              >
+                Poznaj produkt
+              </Button>
             </a>
           </div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-primary rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-primary rounded-full mt-2 animate-pulse" />
-        </div>
-      </div>
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
     </section>
   );
 };

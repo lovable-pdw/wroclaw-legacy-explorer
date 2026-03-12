@@ -1,93 +1,86 @@
-import { MapPin, Phone, Mail, FileText, Shield } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Mountain, Phone, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-card border-t border-primary/20">
+    <footer className="bg-foreground text-white/80">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid md:grid-cols-3 gap-8">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <MapPin className="w-8 h-8 text-primary" />
-              <div className="flex flex-col">
-                <span className="text-xl font-bold text-foreground">
-                  Projekt Dawny
+            <div className="flex items-center gap-2.5 mb-4">
+              <Mountain className="w-7 h-7 text-amber-400" />
+              <div className="flex flex-col leading-tight">
+                <span className="text-base font-bold text-white">
+                  Zwiedzaj
                 </span>
-                <span className="text-lg text-primary font-semibold">
-                  WROCŁAW
+                <span className="text-xs font-semibold text-amber-400 uppercase tracking-widest">
+                  Dolny Śląsk
                 </span>
               </div>
             </div>
-            <p className="text-muted-foreground mb-4">
-              Historyczne wycieczki po Wrocławiu z tabletem i przewodnikiem. 
-              Odkryj przeszłość miasta w nowoczesny sposób.
+            <p className="text-white/60 text-sm leading-relaxed">
+              Aplikacja turystyczna wspierająca samorządy i&nbsp;firmy
+              w&nbsp;promocji miast i&nbsp;regionu Dolnego Śląska.
             </p>
           </div>
 
           {/* Contact */}
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-4">
+            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
               Kontakt
             </h3>
             <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-primary" />
-                <span className="text-muted-foreground">
-                  PDW Sp. z o.o.
-                </span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-primary" />
-                <a 
+              <p className="text-white/60 text-sm">PDW Sp. z o.o.</p>
+              <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-white/40" />
+                <a
                   href="tel:+48787975999"
-                  className="text-muted-foreground hover:text-primary transition-colors duration-300"
+                  className="text-sm text-white/60 hover:text-white transition-colors"
                 >
                   +48 787 975 999
                 </a>
               </div>
-              <div className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-primary" />
-                <span className="text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <Mail className="w-4 h-4 text-white/40" />
+                <a
+                  href="mailto:kontakt@projektdawnywroclaw.pl"
+                  className="text-sm text-white/60 hover:text-white transition-colors"
+                >
                   kontakt@projektdawnywroclaw.pl
-                </span>
+                </a>
               </div>
             </div>
-          </div>          {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-semibold text-foreground mb-4">
-              PATRONAT
-            </h3>
-              <div className="flex gap-2 text-muted-foreground">
-                <span>Airport</span>
-                <span>•</span>
-                <span>LEC</span>
-                <span>•</span>
-                <span>Fly</span>
-              </div>
           </div>
-        </div>        {/* Bottom Bar */}
-        <div className="mt-8 pt-8 border-t border-primary/20">
+
+          {/* Links */}
+          <div>
+            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
+              Nawigacja
+            </h3>
+            <div className="space-y-2 text-sm text-white/60">
+              <a href="#produkt" className="block hover:text-white transition-colors">Produkt</a>
+              <a href="#funkcje" className="block hover:text-white transition-colors">Funkcje</a>
+              <a href="#materialy" className="block hover:text-white transition-colors">Materiały</a>
+              <a href="#miasta" className="block hover:text-white transition-colors">Miasta</a>
+              <a href="#kontakt" className="block hover:text-white transition-colors">Kontakt</a>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="mt-10 pt-8 border-t border-white/10">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-muted-foreground text-center sm:text-left">
-              © 2025 Projekt Dawny Wrocław. Wszystkie prawa zastrzeżone.
+            <p className="text-white/40 text-sm">
+              &copy; {new Date().getFullYear()} PDW Sp. z o.o. Wszystkie prawa zastrzeżone.
             </p>
             <div className="flex gap-4 text-sm">
-              <Link 
-                to="/polityka-prywatnosci" 
-                className="text-muted-foreground hover:text-primary transition-colors duration-300"
+              <Link
+                to="/polityka-prywatnosci"
+                className="text-white/40 hover:text-white/70 transition-colors"
               >
                 Polityka Prywatności
               </Link>
-              <a 
-                href="/regulamin.pdf" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors duration-300"
-              >
-                Regulamin
-              </a>
             </div>
           </div>
         </div>
