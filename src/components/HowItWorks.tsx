@@ -1,47 +1,34 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Navigation, Eye, Headphones, History } from "lucide-react";
+import { useTranslation } from "@/i18n/LanguageContext";
+
+const icons = [
+  <Navigation className="w-6 h-6" />,
+  <Eye className="w-6 h-6" />,
+  <Headphones className="w-6 h-6" />,
+  <History className="w-6 h-6" />,
+];
 
 const HowItWorks = () => {
-  const steps = [
-    {
-      icon: <Navigation className="w-6 h-6" />,
-      title: "Uruchom aplikację i ruszaj na spacer",
-      description: "Dzięki technologii GPS aplikacja prowadzi użytkownika po przygotowanej trasie turystycznej w przestrzeni miasta."
-    },
-    {
-      icon: <Eye className="w-6 h-6" />,
-      title: "Odkrywaj w wybranych punktach",
-      description: "W każdym punkcie trasy pojawiają się rekonstrukcje historyczne, panoramy 360°, materiały archiwalne i opisy historyczne."
-    },
-    {
-      icon: <Headphones className="w-6 h-6" />,
-      title: "Słuchaj narracji lektorskiej",
-      description: "Profesjonalny dubbing lektorski w języku polskim, angielskim i niemieckim — dostępny dla turystów zagranicznych."
-    },
-    {
-      icon: <History className="w-6 h-6" />,
-      title: "Podróżuj w czasie",
-      description: "Zobacz jak wyglądało dane miejsce 100 lub 200 lat temu. To doświadczenie przypomina podróż w czasie w przestrzeni miasta."
-    }
-  ];
+  const { t } = useTranslation();
 
   return (
     <section className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/40">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
-            Jak to działa
+            {t.howItWorks.sectionLabel}
           </p>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Doświadczenie użytkownika
+            {t.howItWorks.title}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Użytkownik uruchamia aplikację na smartfonie i rozpoczyna spacer po mieście.
+            {t.howItWorks.description}
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {steps.map((step, index) => (
+          {t.howItWorks.steps.map((step, index) => (
             <Card key={index} className="border border-border bg-card relative">
               <CardContent className="p-6">
                 <div className="flex items-center gap-3 mb-4">
@@ -49,7 +36,7 @@ const HowItWorks = () => {
                     {index + 1}
                   </div>
                   <div className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
-                    {step.icon}
+                    {icons[index]}
                   </div>
                 </div>
                 <h3 className="text-base font-semibold text-foreground mb-2">

@@ -1,4 +1,8 @@
+import { useTranslation } from "@/i18n/LanguageContext";
+
 const Partners = () => {
+  const { t } = useTranslation();
+
   const partners = [
     {
       name: "Urząd Marszałkowski Województwa Dolnośląskiego",
@@ -22,7 +26,7 @@ const Partners = () => {
     <section className="py-16 px-4 sm:px-6 lg:px-8 border-t border-border">
       <div className="max-w-6xl mx-auto">
         <p className="text-center text-sm font-semibold text-muted-foreground uppercase tracking-widest mb-10">
-          Współpracujemy z
+          {t.partners.title}
         </p>
         <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-8">
           {partners.map((partner) => (

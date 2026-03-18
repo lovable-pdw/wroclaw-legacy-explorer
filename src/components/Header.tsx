@@ -2,17 +2,22 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Mountain } from "lucide-react";
+import { useTranslation } from "@/i18n/LanguageContext";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t, locale, prefix } = useTranslation();
 
   const navigation = [
-    { name: "Produkt", href: "#produkt" },
-    { name: "Funkcje", href: "#funkcje" },
-    { name: "Miasta", href: "#miasta" },
-    { name: "Materiały", href: "#materialy" },
-    { name: "Kontakt", href: "#kontakt" },
+    { name: t.nav.product, href: "#produkt" },
+    { name: t.nav.features, href: "#funkcje" },
+    { name: t.nav.cities, href: "#miasta" },
+    { name: t.nav.materials, href: "#materialy" },
+    { name: t.nav.contact, href: "#kontakt" },
   ];
+
+  const switchTo = locale === "pl" ? "/en" : "/";
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-border">
@@ -29,10 +34,10 @@ const Header = () => {
             <Mountain className="w-7 h-7 text-primary" />
             <div className="flex flex-col leading-tight">
               <span className="text-base font-bold text-foreground tracking-tight">
-                Zwiedzaj
+                {t.hero.title}
               </span>
               <span className="text-xs font-semibold text-primary uppercase tracking-widest">
-                Dolny Śląsk
+                {t.hero.titleHighlight}
               </span>
             </div>
           </a>
@@ -47,12 +52,18 @@ const Header = () => {
                 {item.name}
               </a>
             ))}
+            <Link
+              to={switchTo}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 font-medium uppercase"
+            >
+              {locale === "pl" ? "EN" : "PL"}
+            </Link>
           </nav>
 
           <div className="hidden lg:block">
             <a href="#kontakt">
               <Button size="sm" className="font-semibold">
-                Zostań partnerem
+                {t.nav.becomePartner}
               </Button>
             </a>
           </div>
@@ -75,10 +86,17 @@ const Header = () => {
                     {item.name}
                   </a>
                 ))}
+                <Link
+                  to={switchTo}
+                  className="text-base text-foreground hover:text-primary transition-colors duration-200 uppercase"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {locale === "pl" ? "EN 🇬🇧" : "PL 🇵🇱"}
+                </Link>
                 <div className="pt-4 border-t border-border">
                   <a href="#kontakt" onClick={() => setIsOpen(false)}>
                     <Button className="w-full font-semibold">
-                      Zostań partnerem
+                      {t.nav.becomePartner}
                     </Button>
                   </a>
                 </div>

@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MapPin } from "lucide-react";
+import { useTranslation } from "@/i18n/LanguageContext";
 
 const Hero = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-900">
       {/* Subtle pattern overlay */}
@@ -13,26 +16,24 @@ const Hero = () => {
         <div className="max-w-3xl">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-emerald-200 text-sm font-medium mb-8 animate-fade-in">
             <MapPin className="w-4 h-4" />
-            Dla miast, powiatów, gmin i firm prywatnych
+            {t.hero.badge}
           </div>
 
           <p className="text-emerald-300 font-semibold text-sm uppercase tracking-widest mb-4 animate-fade-in">
-            Aplikacja Turystyczna
+            {t.hero.subtitle}
           </p>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 animate-fade-in-up">
-            Zwiedzaj{" "}
-            <span className="text-amber-400">Dolny Śląsk</span>
+            {t.hero.title}{" "}
+            <span className="text-amber-400">{t.hero.titleHighlight}</span>
           </h1>
 
           <p className="text-lg md:text-xl text-emerald-100/90 mb-4 max-w-2xl leading-relaxed animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
-            Nowoczesne narzędzie promocji turystyki dla miast, powiatów, gmin i firm prywatnych.
+            {t.hero.description}
           </p>
 
           <p className="text-base text-emerald-100/60 mb-10 max-w-2xl leading-relaxed animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-            Dzięki technologii rekonstrukcji 3D, panoramom 360° oraz inteligentnej nawigacji GPS
-            użytkownicy odkrywają historię miejsc bezpośrednio w przestrzeni miasta — patrząc na nią
-            przez ekran smartfona.
+            {t.hero.descriptionLong}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
@@ -41,7 +42,7 @@ const Hero = () => {
                 size="lg"
                 className="bg-amber-500 hover:bg-amber-400 text-emerald-950 font-bold text-base px-8 h-12"
               >
-                Zostań partnerem
+                {t.hero.ctaPrimary}
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </a>
@@ -51,7 +52,7 @@ const Hero = () => {
                 size="lg"
                 className="border-white/30 text-white hover:bg-white/10 font-semibold text-base px-8 h-12 bg-transparent"
               >
-                Poznaj produkt
+                {t.hero.ctaSecondary}
               </Button>
             </a>
           </div>

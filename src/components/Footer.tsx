@@ -1,7 +1,18 @@
 import { Mountain, Phone, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "@/i18n/LanguageContext";
 
 const Footer = () => {
+  const { t } = useTranslation();
+
+  const navItems = [
+    { name: t.nav.product, href: "#produkt" },
+    { name: t.nav.features, href: "#funkcje" },
+    { name: t.nav.materials, href: "#materialy" },
+    { name: t.nav.cities, href: "#miasta" },
+    { name: t.nav.contact, href: "#kontakt" },
+  ];
+
   return (
     <footer className="bg-foreground text-white/80">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -12,23 +23,22 @@ const Footer = () => {
               <Mountain className="w-7 h-7 text-amber-400" />
               <div className="flex flex-col leading-tight">
                 <span className="text-base font-bold text-white">
-                  Zwiedzaj
+                  {t.hero.title}
                 </span>
                 <span className="text-xs font-semibold text-amber-400 uppercase tracking-widest">
-                  Dolny Śląsk
+                  {t.hero.titleHighlight}
                 </span>
               </div>
             </div>
             <p className="text-white/60 text-sm leading-relaxed">
-              Aplikacja turystyczna wspierająca samorządy i&nbsp;firmy
-              w&nbsp;promocji miast i&nbsp;regionu Dolnego Śląska.
+              {t.footer.brandDescription}
             </p>
           </div>
 
           {/* Contact */}
           <div>
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
-              Kontakt
+              {t.footer.contactTitle}
             </h3>
             <div className="space-y-3">
               <p className="text-white/60 text-sm">PDW Sp. z o.o.</p>
@@ -56,14 +66,14 @@ const Footer = () => {
           {/* Links */}
           <div>
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
-              Nawigacja
+              {t.footer.navTitle}
             </h3>
             <div className="space-y-2 text-sm text-white/60">
-              <a href="#produkt" className="block hover:text-white transition-colors">Produkt</a>
-              <a href="#funkcje" className="block hover:text-white transition-colors">Funkcje</a>
-              <a href="#materialy" className="block hover:text-white transition-colors">Materiały</a>
-              <a href="#miasta" className="block hover:text-white transition-colors">Miasta</a>
-              <a href="#kontakt" className="block hover:text-white transition-colors">Kontakt</a>
+              {navItems.map((item) => (
+                <a key={item.name} href={item.href} className="block hover:text-white transition-colors">
+                  {item.name}
+                </a>
+              ))}
             </div>
           </div>
         </div>
@@ -72,14 +82,14 @@ const Footer = () => {
         <div className="mt-10 pt-8 border-t border-white/10">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-white/40 text-sm">
-              &copy; {new Date().getFullYear()} PDW Sp. z o.o. Wszystkie prawa zastrzeżone.
+              &copy; {new Date().getFullYear()} PDW Sp. z o.o. {t.footer.copyright}
             </p>
             <div className="flex gap-4 text-sm">
               <Link
-                to="/polityka-prywatnosci"
+                to={t.footer.privacyPolicyPath}
                 className="text-white/40 hover:text-white/70 transition-colors"
               >
-                Polityka Prywatności
+                {t.footer.privacyPolicy}
               </Link>
             </div>
           </div>

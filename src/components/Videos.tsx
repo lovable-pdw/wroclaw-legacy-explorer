@@ -1,65 +1,34 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { useTranslation } from "@/i18n/LanguageContext";
+
+const appYoutubeIds = ["nuvXzs5f4_M", "hDZ9uFpmgCE"];
+const cityYoutubeIds = ["fNxIyoXs1Yg", "Oln5aHooR3g", "lRtNNLSZBUA", "wfQbPtqcfzY"];
 
 const Videos = () => {
-  const appVideos = [
-    {
-      title: "Zwiedzaj Dolny Śląsk — Aplikacja",
-      description: "Poznaj naszą aplikację turystyczną promującą region Dolnego Śląska.",
-      youtubeId: "nuvXzs5f4_M"
-    },
-    {
-      title: "Aplikacja w działaniu — Panoramy 360°",
-      description: "Zobacz jak działają interaktywne panoramy i rekonstrukcje historyczne w aplikacji.",
-      youtubeId: "hDZ9uFpmgCE"
-    }
-  ];
-
-  const cityVideos = [
-    {
-      title: "Legnica",
-      description: "Odkryj historię i zabytki Legnicy.",
-      youtubeId: "fNxIyoXs1Yg"
-    },
-    {
-      title: "Świdnica",
-      description: "Perła Dolnego Śląska z Kościołem Pokoju UNESCO.",
-      youtubeId: "Oln5aHooR3g"
-    },
-    {
-      title: "Wałbrzych",
-      description: "Zamek Książ i górnicze dziedzictwo miasta.",
-      youtubeId: "lRtNNLSZBUA"
-    },
-    {
-      title: "Trzebnica",
-      description: "Miasto Św. Jadwigi Śląskiej.",
-      youtubeId: "wfQbPtqcfzY"
-    }
-  ];
+  const { t } = useTranslation();
 
   return (
     <section id="materialy" className="py-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
-            Materiały
+            {t.videos.sectionLabel}
           </p>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Aplikacja i panoramy 360°
+            {t.videos.title}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Nasza aplikacja umożliwia oglądanie interaktywnych panoram sferycznych 360°
-            i&nbsp;rekonstrukcji historycznych bezpośrednio w terenie.
+            {t.videos.description}
           </p>
         </div>
 
         {/* App demo videos */}
         <div className="grid md:grid-cols-2 gap-6 mb-16">
-          {appVideos.map((video) => (
-            <Card key={video.youtubeId} className="border border-border overflow-hidden bg-card">
+          {t.videos.appVideos.map((video, index) => (
+            <Card key={appYoutubeIds[index]} className="border border-border overflow-hidden bg-card">
               <div className="aspect-video">
                 <iframe
-                  src={`https://www.youtube.com/embed/${video.youtubeId}`}
+                  src={`https://www.youtube.com/embed/${appYoutubeIds[index]}`}
                   title={video.title}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
@@ -81,22 +50,22 @@ const Videos = () => {
         {/* City promo videos */}
         <div className="text-center mb-8">
           <h3 className="text-2xl font-bold text-foreground mb-2">
-            Filmy promocyjne miast
+            {t.videos.cityVideosTitle}
           </h3>
           <p className="text-muted-foreground">
-            Przykłady materiałów, które tworzymy dla miast Dolnego Śląska.
+            {t.videos.cityVideosDescription}
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {cityVideos.map((video) => (
+          {t.videos.cityVideos.map((video, index) => (
             <Card
-              key={video.youtubeId}
+              key={cityYoutubeIds[index]}
               className="border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 bg-card overflow-hidden"
             >
               <div className="aspect-video">
                 <iframe
-                  src={`https://www.youtube.com/embed/${video.youtubeId}`}
+                  src={`https://www.youtube.com/embed/${cityYoutubeIds[index]}`}
                   title={video.title}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen

@@ -1,0 +1,219 @@
+{
+  "nav": {
+    "product": "Product",
+    "features": "Features",
+    "cities": "Cities",
+    "materials": "Materials",
+    "contact": "Contact",
+    "becomePartner": "Become a partner"
+  },
+  "hero": {
+    "badge": "For cities, counties, municipalities and private companies",
+    "subtitle": "Tourism App",
+    "title": "Explore",
+    "titleHighlight": "Lower Silesia",
+    "description": "A modern tourism promotion tool for cities, counties, municipalities and private companies.",
+    "descriptionLong": "Using 3D reconstruction technology, 360° panoramas and intelligent GPS navigation, users discover the history of places directly in the city space — viewing it through their smartphone screen.",
+    "ctaPrimary": "Become a partner",
+    "ctaSecondary": "Discover the product"
+  },
+  "services": {
+    "sectionLabel": "Why a tourism app?",
+    "title": "Benefits for local government and\u00a0partners",
+    "description": "Lower Silesia is one of the richest regions in Europe in terms of history and tourism. Hundreds of cities and towns hold extraordinary stories — from industrial fortunes, through residential architecture, to cultural and landscape heritage.",
+    "items": [
+      {
+        "title": "Modern city promotion",
+        "description": "The city presents its history and attractions in an engaging multimedia format."
+      },
+      {
+        "title": "Increased tourist traffic",
+        "description": "Interactive routes and visualizations encourage tourists to extend their stay."
+      },
+      {
+        "title": "Historical education",
+        "description": "The app popularizes local history among residents and tourists."
+      },
+      {
+        "title": "Event promotion tool",
+        "description": "Integrated event calendar and tourist information guide."
+      },
+      {
+        "title": "Available year-round",
+        "description": "The app works regardless of the tourist season."
+      },
+      {
+        "title": "Digital guide",
+        "description": "The modern tourist travels with a phone in hand. The app becomes a guide that leads them through the city's history."
+      }
+    ]
+  },
+  "howItWorks": {
+    "sectionLabel": "How it works",
+    "title": "User experience",
+    "description": "The user launches the app on their smartphone and starts walking through the city.",
+    "steps": [
+      {
+        "title": "Launch the app and go for a walk",
+        "description": "Using GPS technology, the app guides the user along a prepared tourist route through the city."
+      },
+      {
+        "title": "Discover at selected points",
+        "description": "At each point on the route, historical reconstructions, 360° panoramas, archival materials and historical descriptions appear."
+      },
+      {
+        "title": "Listen to narration",
+        "description": "Professional voice-over narration in Polish, English and German — available for international tourists."
+      },
+      {
+        "title": "Travel through time",
+        "description": "See what a place looked like 100 or 200 years ago. The experience feels like time travel through the city."
+      }
+    ]
+  },
+  "features": {
+    "sectionLabel": "Functionalities",
+    "title": "Main app features",
+    "description": "A modern digital platform that allows you to present history, culture and tourist attractions in an immersive and engaging way.",
+    "items": [
+      {
+        "title": "3D historical reconstructions",
+        "description": "Digital recreation of buildings, factories, palaces and urban layouts that no longer exist.",
+        "details": ["Archival photographs", "Historical maps", "Iconographic documentation"]
+      },
+      {
+        "title": "360° spherical panoramas",
+        "description": "High-quality panoramas allow you to see historical places from every angle.",
+        "details": ["360-degree view", "Historical elements on the modern landscape", "Immersive experience"]
+      },
+      {
+        "title": "Intelligent GPS guide",
+        "description": "The app guides the user along a tourist route through the city.",
+        "details": ["Historical description of each point", "Multimedia materials", "Voice-over narration"]
+      },
+      {
+        "title": "Multi-language narration",
+        "description": "Professional voice-over dubbing available for international tourists.",
+        "details": ["Polish", "English", "German"]
+      },
+      {
+        "title": "Partner Dashboard",
+        "description": "A special module for the city — a digital information board within the app.",
+        "details": ["Cultural events", "Festival promotion", "Tourist attractions and local institutions"]
+      }
+    ]
+  },
+  "videos": {
+    "sectionLabel": "Materials",
+    "title": "App and 360° panoramas",
+    "description": "Our app enables viewing interactive 360° spherical panoramas and historical reconstructions directly in the field.",
+    "cityVideosTitle": "City promotional videos",
+    "cityVideosDescription": "Examples of materials we create for cities of Lower Silesia.",
+    "appVideos": [
+      {
+        "title": "Explore Lower Silesia — App",
+        "description": "Discover our tourism app promoting the Lower Silesia region."
+      },
+      {
+        "title": "App in action — 360° Panoramas",
+        "description": "See how interactive panoramas and historical reconstructions work in the app."
+      }
+    ],
+    "cityVideos": [
+      {
+        "title": "Legnica",
+        "description": "Discover the history and monuments of Legnica."
+      },
+      {
+        "title": "Świdnica",
+        "description": "A gem of Lower Silesia with the UNESCO Church of Peace."
+      },
+      {
+        "title": "Wałbrzych",
+        "description": "Książ Castle and the city's mining heritage."
+      },
+      {
+        "title": "Trzebnica",
+        "description": "The city of St. Hedwig of Silesia."
+      }
+    ]
+  },
+  "cities": {
+    "sectionLabel": "Example cities",
+    "title": "Lower Silesia full of possibilities",
+    "description": "Every city in Lower Silesia has a unique heritage that deserves modern promotion. Here are examples of cities for which we can prepare dedicated routes and materials.",
+    "cta": "And many other cities and towns in Lower Silesia.",
+    "ctaLink": "Let's talk about your city",
+    "items": [
+      {
+        "name": "Wrocław",
+        "description": "Capital of Lower Silesia — Market Square, Cathedral Island, Centennial Hall and the Oder River boulevards."
+      },
+      {
+        "name": "Legnica",
+        "description": "A city with a rich Piast dynasty history — Piast Castle, Cathedral, medieval centre."
+      },
+      {
+        "name": "Świdnica",
+        "description": "UNESCO Church of Peace, historic market square and brewing tradition."
+      },
+      {
+        "name": "Trzebnica",
+        "description": "City of St. Hedwig of Silesia — Basilica, Cistercian Monastery, Trzebnica Hills."
+      },
+      {
+        "name": "Wałbrzych",
+        "description": "Książ Castle, Old Mine and rich mining heritage of the region."
+      },
+      {
+        "name": "Jelenia Góra",
+        "description": "Gateway to the Karkonosze Mountains — Cieplice, Schaffgotsch Palace, Norwegian Park."
+      },
+      {
+        "name": "Kłodzko",
+        "description": "Kłodzko Fortress, Gothic bridge and the charming Kłodzko Valley."
+      },
+      {
+        "name": "Bolków",
+        "description": "Bolków Castle and the picturesque landscapes of the Kaczawa Foothills."
+      }
+    ]
+  },
+  "contact": {
+    "sectionLabel": "Contact",
+    "title": "Become a partner",
+    "description": "We work with local governments and private companies. Want to promote your city or business in the Explore Lower Silesia app? Let's talk about the possibilities.",
+    "phone": "Phone",
+    "email": "Email",
+    "nameLabel": "Full name",
+    "namePlaceholder": "John Smith",
+    "orgLabel": "Organisation / City / Company",
+    "orgPlaceholder": "City council, company...",
+    "emailLabel": "Email",
+    "emailPlaceholder": "john@city.com",
+    "phoneLabel": "Phone",
+    "phonePlaceholder": "+48...",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Tell us about your city and expectations...",
+    "submit": "Send message",
+    "submitting": "Sending...",
+    "successTitle": "Message sent",
+    "successDescription": "Thank you for your interest. We'll get back to you soon!"
+  },
+  "partners": {
+    "title": "We work with"
+  },
+  "footer": {
+    "brandDescription": "A tourism app supporting local governments and companies in promoting cities and the Lower Silesia region.",
+    "contactTitle": "Contact",
+    "navTitle": "Navigation",
+    "copyright": "All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "privacyPolicyPath": "/en/privacy-policy"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Page not found",
+    "backHome": "Back to homepage"
+  }
+}

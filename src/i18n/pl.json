@@ -1,0 +1,219 @@
+{
+  "nav": {
+    "product": "Produkt",
+    "features": "Funkcje",
+    "cities": "Miasta",
+    "materials": "Materiały",
+    "contact": "Kontakt",
+    "becomePartner": "Zostań partnerem"
+  },
+  "hero": {
+    "badge": "Dla miast, powiatów, gmin i firm prywatnych",
+    "subtitle": "Aplikacja Turystyczna",
+    "title": "Zwiedzaj",
+    "titleHighlight": "Dolny Śląsk",
+    "description": "Nowoczesne narzędzie promocji turystyki dla miast, powiatów, gmin i firm prywatnych.",
+    "descriptionLong": "Dzięki technologii rekonstrukcji 3D, panoramom 360° oraz inteligentnej nawigacji GPS użytkownicy odkrywają historię miejsc bezpośrednio w przestrzeni miasta — patrząc na nią przez ekran smartfona.",
+    "ctaPrimary": "Zostań partnerem",
+    "ctaSecondary": "Poznaj produkt"
+  },
+  "services": {
+    "sectionLabel": "Dlaczego aplikacja turystyczna?",
+    "title": "Korzyści dla samorządu i\u00a0partnera",
+    "description": "Dolny Śląsk to jeden z najbogatszych historycznie i turystycznie regionów Europy. Setki miast i miejscowości kryją niezwykłe historie — od przemysłowych fortun, przez architekturę rezydencjonalną, po dziedzictwo kulturowe i krajobrazowe.",
+    "items": [
+      {
+        "title": "Nowoczesna promocja miasta",
+        "description": "Miasto prezentuje swoją historię i atrakcje w atrakcyjnej formie multimedialnej."
+      },
+      {
+        "title": "Zwiększenie ruchu turystycznego",
+        "description": "Interaktywne trasy i wizualizacje zachęcają turystów do dłuższego pobytu."
+      },
+      {
+        "title": "Edukacja historyczna",
+        "description": "Aplikacja popularyzuje lokalną historię wśród mieszkańców i turystów."
+      },
+      {
+        "title": "Narzędzie promocji wydarzeń",
+        "description": "Zintegrowany kalendarz wydarzeń i informator turystyczny."
+      },
+      {
+        "title": "Produkt dostępny przez cały rok",
+        "description": "Aplikacja działa niezależnie od sezonu turystycznego."
+      },
+      {
+        "title": "Cyfrowy przewodnik",
+        "description": "Nowoczesny turysta podróżuje z telefonem w ręku. Aplikacja staje się przewodnikiem, który prowadzi go przez historię miasta."
+      }
+    ]
+  },
+  "howItWorks": {
+    "sectionLabel": "Jak to działa",
+    "title": "Doświadczenie użytkownika",
+    "description": "Użytkownik uruchamia aplikację na smartfonie i rozpoczyna spacer po mieście.",
+    "steps": [
+      {
+        "title": "Uruchom aplikację i ruszaj na spacer",
+        "description": "Dzięki technologii GPS aplikacja prowadzi użytkownika po przygotowanej trasie turystycznej w przestrzeni miasta."
+      },
+      {
+        "title": "Odkrywaj w wybranych punktach",
+        "description": "W każdym punkcie trasy pojawiają się rekonstrukcje historyczne, panoramy 360°, materiały archiwalne i opisy historyczne."
+      },
+      {
+        "title": "Słuchaj narracji lektorskiej",
+        "description": "Profesjonalny dubbing lektorski w języku polskim, angielskim i niemieckim — dostępny dla turystów zagranicznych."
+      },
+      {
+        "title": "Podróżuj w czasie",
+        "description": "Zobacz jak wyglądało dane miejsce 100 lub 200 lat temu. To doświadczenie przypomina podróż w czasie w przestrzeni miasta."
+      }
+    ]
+  },
+  "features": {
+    "sectionLabel": "Funkcjonalności",
+    "title": "Główne funkcje aplikacji",
+    "description": "Nowoczesna platforma cyfrowa, która pozwala zaprezentować historię, kulturę i atrakcje turystyczne w sposób immersyjny i atrakcyjny.",
+    "items": [
+      {
+        "title": "Rekonstrukcje historyczne 3D",
+        "description": "Cyfrowe odtworzenie nieistniejących już budynków, fabryk, pałaców czy układów urbanistycznych.",
+        "details": ["Archiwalne fotografie", "Mapy historyczne", "Dokumentacja ikonograficzna"]
+      },
+      {
+        "title": "Panoramy sferyczne 360°",
+        "description": "Wysokiej jakości panoramy pozwalają zobaczyć historyczne miejsca z każdej strony.",
+        "details": ["Widok na 360 stopni", "Elementy historyczne na współczesnym krajobrazie", "Immersyjne doświadczenie"]
+      },
+      {
+        "title": "Inteligentny przewodnik GPS",
+        "description": "Aplikacja prowadzi użytkownika po trasie turystycznej w przestrzeni miasta.",
+        "details": ["Opis historyczny każdego punktu", "Materiały multimedialne", "Narracja lektorska"]
+      },
+      {
+        "title": "Narracja w wielu językach",
+        "description": "Profesjonalny dubbing lektorski dostępny dla turystów zagranicznych.",
+        "details": ["Język polski", "Język angielski", "Język niemiecki"]
+      },
+      {
+        "title": "Tablica Partnera",
+        "description": "Specjalny moduł dla miasta — cyfrowa tablica informacyjna w aplikacji.",
+        "details": ["Wydarzenia kulturalne", "Promocja festiwali", "Atrakcje turystyczne i lokalne instytucje"]
+      }
+    ]
+  },
+  "videos": {
+    "sectionLabel": "Materiały",
+    "title": "Aplikacja i panoramy 360°",
+    "description": "Nasza aplikacja umożliwia oglądanie interaktywnych panoram sferycznych 360° i\u00a0rekonstrukcji historycznych bezpośrednio w terenie.",
+    "cityVideosTitle": "Filmy promocyjne miast",
+    "cityVideosDescription": "Przykłady materiałów, które tworzymy dla miast Dolnego Śląska.",
+    "appVideos": [
+      {
+        "title": "Zwiedzaj Dolny Śląsk — Aplikacja",
+        "description": "Poznaj naszą aplikację turystyczną promującą region Dolnego Śląska."
+      },
+      {
+        "title": "Aplikacja w działaniu — Panoramy 360°",
+        "description": "Zobacz jak działają interaktywne panoramy i rekonstrukcje historyczne w aplikacji."
+      }
+    ],
+    "cityVideos": [
+      {
+        "title": "Legnica",
+        "description": "Odkryj historię i zabytki Legnicy."
+      },
+      {
+        "title": "Świdnica",
+        "description": "Perła Dolnego Śląska z Kościołem Pokoju UNESCO."
+      },
+      {
+        "title": "Wałbrzych",
+        "description": "Zamek Książ i górnicze dziedzictwo miasta."
+      },
+      {
+        "title": "Trzebnica",
+        "description": "Miasto Św. Jadwigi Śląskiej."
+      }
+    ]
+  },
+  "cities": {
+    "sectionLabel": "Przykładowe miasta",
+    "title": "Dolny Śląsk pełen możliwości",
+    "description": "Każde miasto Dolnego Śląska ma unikalne dziedzictwo, które zasługuje na nowoczesną promocję. Oto przykłady miast, dla których możemy przygotować dedykowane trasy i\u00a0materiały.",
+    "cta": "I wiele innych miast i miejscowości Dolnego Śląska.",
+    "ctaLink": "Porozmawiajmy o Twoim mieście",
+    "items": [
+      {
+        "name": "Wrocław",
+        "description": "Stolica Dolnego Śląska — Rynek, Ostrów Tumski, Hala Stulecia i nadodrzańskie bulwary."
+      },
+      {
+        "name": "Legnica",
+        "description": "Miasto o bogatej historii piastowskiej — Zamek Piastowski, Katedra, średniowieczne centrum."
+      },
+      {
+        "name": "Świdnica",
+        "description": "Kościół Pokoju UNESCO, zabytkowy rynek i tradycja browarnicza."
+      },
+      {
+        "name": "Trzebnica",
+        "description": "Miasto Św. Jadwigi Śląskiej — Bazylika, Klasztor Cysterek, Wzgórza Trzebnickie."
+      },
+      {
+        "name": "Wałbrzych",
+        "description": "Zamek Książ, Stara Kopalnia i bogate dziedzictwo górnicze regionu."
+      },
+      {
+        "name": "Jelenia Góra",
+        "description": "Brama Karkonoszy — Cieplice, Pałac Schaffgotschów, Park Norweskiego."
+      },
+      {
+        "name": "Kłodzko",
+        "description": "Twierdza Kłodzko, gotycki most i urokliwe Ziemia Kłodzka."
+      },
+      {
+        "name": "Bolków",
+        "description": "Zamek Bolków i malownicze pejzaże Pogórza Kaczawskiego."
+      }
+    ]
+  },
+  "contact": {
+    "sectionLabel": "Kontakt",
+    "title": "Zostań partnerem",
+    "description": "Współpracujemy z samorządami i firmami prywatnymi. Chcesz promować swoje miasto lub biznes w aplikacji Zwiedzaj Dolny Śląsk? Porozmawiajmy o możliwościach.",
+    "phone": "Telefon",
+    "email": "Email",
+    "nameLabel": "Imię i nazwisko",
+    "namePlaceholder": "Jan Kowalski",
+    "orgLabel": "Organizacja / Miasto / Firma",
+    "orgPlaceholder": "Urząd Miasta, firma...",
+    "emailLabel": "Email",
+    "emailPlaceholder": "jan@miasto.pl",
+    "phoneLabel": "Telefon",
+    "phonePlaceholder": "+48...",
+    "messageLabel": "Wiadomość",
+    "messagePlaceholder": "Opowiedz nam o swoim mieście i oczekiwaniach...",
+    "submit": "Wyślij wiadomość",
+    "submitting": "Wysyłanie...",
+    "successTitle": "Wiadomość wysłana",
+    "successDescription": "Dziękujemy za zainteresowanie. Odezwiemy się wkrótce!"
+  },
+  "partners": {
+    "title": "Współpracujemy z"
+  },
+  "footer": {
+    "brandDescription": "Aplikacja turystyczna wspierająca samorządy i\u00a0firmy w\u00a0promocji miast i\u00a0regionu Dolnego Śląska.",
+    "contactTitle": "Kontakt",
+    "navTitle": "Nawigacja",
+    "copyright": "Wszystkie prawa zastrzeżone.",
+    "privacyPolicy": "Polityka Prywatności",
+    "privacyPolicyPath": "/polityka-prywatnosci"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Strona nie została znaleziona",
+    "backHome": "Wróć na stronę główną"
+  }
+}

@@ -6,9 +6,11 @@ import { Label } from "@/components/ui/label";
 import { Mail, Phone, Building2 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/i18n/LanguageContext";
 
 const Contact = () => {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -18,8 +20,8 @@ const Contact = () => {
     // For now, just show a confirmation - will wire up email later
     setTimeout(() => {
       toast({
-        title: "Wiadomość wysłana",
-        description: "Dziękujemy za zainteresowanie. Odezwiemy się wkrótce!",
+        title: t.contact.successTitle,
+        description: t.contact.successDescription,
       });
       setIsSubmitting(false);
       (e.target as HTMLFormElement).reset();
@@ -31,15 +33,13 @@ const Contact = () => {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
-            Kontakt
+            {t.contact.sectionLabel}
           </p>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Zostań partnerem
+            {t.contact.title}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Współpracujemy z samorządami i firmami prywatnymi.
-            Chcesz promować swoje miasto lub biznes w aplikacji Zwiedzaj Dolny Śląsk?
-            Porozmawiajmy o możliwościach.
+            {t.contact.description}
           </p>
         </div>
 
@@ -67,7 +67,7 @@ const Contact = () => {
                     <Phone className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="font-semibold text-foreground">Telefon</p>
+                    <p className="font-semibold text-foreground">{t.contact.phone}</p>
                     <a
                       href="tel:+48787975999"
                       className="text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -86,7 +86,7 @@ const Contact = () => {
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="font-semibold text-foreground">Email</p>
+                    <p className="font-semibold text-foreground">{t.contact.email}</p>
                     <a
                       href="mailto:pdw@pdw.wroc.pl"
                       className="text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -105,18 +105,18 @@ const Contact = () => {
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Imię i nazwisko</Label>
+                    <Label htmlFor="name">{t.contact.nameLabel}</Label>
                     <Input
                       id="name"
-                      placeholder="Jan Kowalski"
+                      placeholder={t.contact.namePlaceholder}
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="organization">Organizacja / Miasto / Firma</Label>
+                    <Label htmlFor="organization">{t.contact.orgLabel}</Label>
                     <Input
                       id="organization"
-                      placeholder="Urząd Miasta, firma..."
+                      placeholder={t.contact.orgPlaceholder}
                       required
                     />
                   </div>
@@ -124,29 +124,29 @@ const Contact = () => {
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">{t.contact.emailLabel}</Label>
                     <Input
                       id="email"
                       type="email"
-                      placeholder="jan@miasto.pl"
+                      placeholder={t.contact.emailPlaceholder}
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Telefon</Label>
+                    <Label htmlFor="phone">{t.contact.phoneLabel}</Label>
                     <Input
                       id="phone"
                       type="tel"
-                      placeholder="+48..."
+                      placeholder={t.contact.phonePlaceholder}
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="message">Wiadomość</Label>
+                  <Label htmlFor="message">{t.contact.messageLabel}</Label>
                   <Textarea
                     id="message"
-                    placeholder="Opowiedz nam o swoim mieście i oczekiwaniach..."
+                    placeholder={t.contact.messagePlaceholder}
                     rows={4}
                     required
                   />
@@ -157,7 +157,7 @@ const Contact = () => {
                   className="w-full font-semibold h-11"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Wysyłanie..." : "Wyślij wiadomość"}
+                  {isSubmitting ? t.contact.submitting : t.contact.submit}
                 </Button>
               </form>
             </CardContent>
