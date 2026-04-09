@@ -10,7 +10,7 @@ const Partners = () => {
     },
     {
       name: "Koleje Dolnośląskie",
-      logoUrl: "/logos/koleje-dolnoslaskie-logo.jpg"
+      logoUrl: "/logos/koleje-dolnoslaskie-logo.png"
     },
     {
       name: "Port Lotniczy Wrocław",
